@@ -1,0 +1,6 @@
+usr/local/bin/pwrb-qt usr/bin
+share/pixmaps/pwrb32.xpm usr/share/pixmaps
+share/pixmaps/pwrb16.xpm usr/share/pixmaps
+share/pixmaps/pwrb128.png usr/share/pixmaps
+debian/pwrb-qt.desktop usr/share/applications
+debian/pwrb-qt.protocol usr/share/kde4/services/

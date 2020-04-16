@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=PWRB Core
+Comment=PWRB P2P Cryptocurrency
+Comment[fr]=PWRB, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=PWRB, eşten eşe kriptografik sanal para birimi
+Exec=pwrb-qt %u
+Terminal=false
+Type=Application
+Icon=pwrb128
+MimeType=x-scheme-handler/pwrb;
+Categories=Office;Finance;
+StartupWMClass=Pwrb-qt

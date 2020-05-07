@@ -1,5 +1,9 @@
-// Copyright (c) 2020 The PIVX Core developers
+// Copyright (c) 2020 The PIVX developers
+// Copyright (c) 2020 The PWRDev developers
+// Copyright (c) 2020 The powerbalt developers
 // Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
 #ifndef PWRB_HDCHAIN_H
 #define PWRB_HDCHAIN_H
 

@@ -7,13 +7,16 @@
 #ifndef MASTERNODESWIDGET_H
 #define MASTERNODESWIDGET_H
 
-#include <QWidget>
 #include "qt/pwrb/pwidget.h"
 #include "qt/pwrb/furabstractlistitemdelegate.h"
 #include "qt/pwrb/mnmodel.h"
 #include "qt/pwrb/tooltipmenu.h"
-#include <QTimer>
+#include "walletmodel.h"
+
 #include <atomic>
+
+#include <QTimer>
+#include <QWidget>
 
 class PWRBGUI;
 

@@ -428,7 +428,6 @@ public:
 
     std::vector<CKeyID> GetAffectedKeys(const CScript& spk);
     void GetKeyBirthTimes(std::map<CKeyID, int64_t>& mapKeyBirth) const;
-    unsigned int ComputeTimeSmart(const CWalletTx& wtx) const;
 
     /**
      * Increment the next transaction order id
@@ -736,7 +735,7 @@ public:
         READWRITE(nIndex);
     }
 
-    int SetMerkleBranch(const CBlock& block);
+    void SetMerkleBranch(const CBlock& block);
 
 
     /**
@@ -772,6 +771,10 @@ public:
     std::vector<std::pair<std::string, std::string> > vOrderForm;
     unsigned int fTimeReceivedIsTxTime;
     unsigned int nTimeReceived; //! time received by this node
+    /**
+     * Stable timestamp representing the block time, for a transaction included in a block,
+     * or else the time when the transaction was received if it isn't yet part of a block.
+     */
     unsigned int nTimeSmart;
     char fFromMe;
     std::string strFromAccount;
@@ -909,7 +912,7 @@ public:
     bool WriteToDisk(CWalletDB *pwalletdb);
 
     int64_t GetTxTime() const;
-    int64_t GetComputedTxTime() const;
+    void UpdateTimeSmart();
     int GetRequestCount() const;
     void RelayWalletTransaction(std::string strCommand = "tx");
     std::set<uint256> GetConflicts() const;

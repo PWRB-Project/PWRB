@@ -30,8 +30,6 @@ QT_TRANSLATE_NOOP("pwrb-core", ""
 "notation for IPv6. This option can be specified multiple times (default: "
 "bind to all interfaces)"),
 QT_TRANSLATE_NOOP("pwrb-core", ""
-"Calculated accumulator checkpoint is not what is recorded by block index"),
-QT_TRANSLATE_NOOP("pwrb-core", ""
 "Cannot obtain a lock on data directory %s. PWRB Core is probably already "
 "running."),
 QT_TRANSLATE_NOOP("pwrb-core", ""
@@ -58,11 +56,6 @@ QT_TRANSLATE_NOOP("pwrb-core", ""
 QT_TRANSLATE_NOOP("pwrb-core", ""
 "Enable SwiftX, show confirmations for locked transactions (bool, default: %s)"),
 QT_TRANSLATE_NOOP("pwrb-core", ""
-"Enable automatic Zerocoin minting from specific addresses (0-1, default: %u)"),
-QT_TRANSLATE_NOOP("pwrb-core", ""
-"Enable automatic wallet backups triggered after each zPWRB minting (0-1, "
-"default: %u)"),
-QT_TRANSLATE_NOOP("pwrb-core", ""
 "Enable cold staking functionality (0-1, default: %u). Disabled if staking=0"),
 QT_TRANSLATE_NOOP("pwrb-core", ""
 "Enable or disable staking functionality for PWRB inputs (0-1, default: %u)"),
@@ -82,13 +75,14 @@ QT_TRANSLATE_NOOP("pwrb-core", ""
 "in your wallet were already spent, such as if you used a copy of wallet.dat "
 "and coins were spent in the copy but not marked as spent here."),
 QT_TRANSLATE_NOOP("pwrb-core", ""
-"Error: This transaction requires a transaction fee of at least %s because of "
-"its amount, complexity, or use of recently received funds!"),
-QT_TRANSLATE_NOOP("pwrb-core", ""
 "Error: Unsupported argument -checklevel found. Checklevel must be level 4."),
 QT_TRANSLATE_NOOP("pwrb-core", ""
 "Error: Unsupported argument -socks found. Setting SOCKS version isn't "
 "possible anymore, only SOCKS5 proxies are supported."),
+QT_TRANSLATE_NOOP("pwrb-core", ""
+"Exclude debugging information for a category. Can be used in conjunction "
+"with -debug=1 to output debug logs for all categories except one or more "
+"specified categories."),
 QT_TRANSLATE_NOOP("pwrb-core", ""
 "Execute command when a relevant alert is received or we see a really long "
 "fork (%s in cmd is replaced by message)"),
@@ -148,13 +142,10 @@ QT_TRANSLATE_NOOP("pwrb-core", ""
 QT_TRANSLATE_NOOP("pwrb-core", ""
 "Number of seconds to keep misbehaving peers from reconnecting (default: %u)"),
 QT_TRANSLATE_NOOP("pwrb-core", ""
-"Obfuscation uses exact denominated amounts to send funds, you might simply "
-"need to anonymize some more coins."),
-QT_TRANSLATE_NOOP("pwrb-core", ""
 "Output debugging information (default: %u, supplying <category> is optional)"),
 QT_TRANSLATE_NOOP("pwrb-core", ""
-"Preferred Denomination for automatically minted Zerocoin  "
-"(1/5/10/50/100/500/1000/5000), 0 for no preference. default: %u)"),
+"Please check that your computer's date and time are correct! If your clock "
+"is wrong PWRB Core will not work properly."),
 QT_TRANSLATE_NOOP("pwrb-core", ""
 "Query for peer addresses via DNS lookup, if low on addresses (default: 1 "
 "unless -connect)"),
@@ -168,9 +159,6 @@ QT_TRANSLATE_NOOP("pwrb-core", ""
 QT_TRANSLATE_NOOP("pwrb-core", ""
 "Set maximum size of high-priority/low-fee transactions in bytes (default: %d)"),
 QT_TRANSLATE_NOOP("pwrb-core", ""
-"Set the number of included blocks to precompute per cycle. (minimum: %d) "
-"(maximum: %d) (default: %d)"),
-QT_TRANSLATE_NOOP("pwrb-core", ""
 "Set the number of script verification threads (%u to %d, 0 = auto, <0 = "
 "leave that many cores free, default: %d)"),
 QT_TRANSLATE_NOOP("pwrb-core", ""
@@ -180,14 +168,12 @@ QT_TRANSLATE_NOOP("pwrb-core", ""
 "Show N confirmations for a successfully locked transaction (0-9999, default: "
 "%u)"),
 QT_TRANSLATE_NOOP("pwrb-core", ""
-"Specify custom backup path to add a copy of any automatic zPWRB backup. If "
-"set as dir, every backup generates a timestamped file. If set as file, will "
-"rewrite to that file every backup. If backuppath is set as well, 4 backups "
-"will happen"),
-QT_TRANSLATE_NOOP("pwrb-core", ""
 "Specify custom backup path to add a copy of any wallet backup. If set as "
 "dir, every backup generates a timestamped file. If set as file, will rewrite "
 "to that file every backup."),
+QT_TRANSLATE_NOOP("pwrb-core", ""
+"Specify location of debug log file: this can be an absolute path or a path "
+"relative to the data directory (default: %s)"),
 QT_TRANSLATE_NOOP("pwrb-core", ""
 "Support filtering of blocks and transaction with bloom filters (default: %u)"),
 QT_TRANSLATE_NOOP("pwrb-core", ""
@@ -211,14 +197,6 @@ QT_TRANSLATE_NOOP("pwrb-core", ""
 QT_TRANSLATE_NOOP("pwrb-core", ""
 "Unable to bind to %s on this computer. PWRB Core is probably already running."),
 QT_TRANSLATE_NOOP("pwrb-core", ""
-"Unable to locate enough Obfuscation denominated funds for this transaction."),
-QT_TRANSLATE_NOOP("pwrb-core", ""
-"Unable to locate enough Obfuscation non-denominated funds for this "
-"transaction that are not equal 10000 PWRB."),
-QT_TRANSLATE_NOOP("pwrb-core", ""
-"Unable to locate enough funds for this transaction that are not equal 10000 "
-"PWRB."),
-QT_TRANSLATE_NOOP("pwrb-core", ""
 "Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: "
 "%s)"),
 QT_TRANSLATE_NOOP("pwrb-core", ""
@@ -227,10 +205,6 @@ QT_TRANSLATE_NOOP("pwrb-core", ""
 QT_TRANSLATE_NOOP("pwrb-core", ""
 "Warning: -paytxfee is set very high! This is the transaction fee you will "
 "pay if you send a transaction."),
-QT_TRANSLATE_NOOP("pwrb-core", ""
-"Warning: Peers are being disconnected due time differences. Please check "
-"that your computer's date and time are correct! If your clock is wrong PWRB "
-"Core will not work properly."),
 QT_TRANSLATE_NOOP("pwrb-core", ""
 "Warning: Please check that your computer's date and time are correct! If "
 "your clock is wrong PWRB Core will not work properly."),
@@ -265,7 +239,6 @@ QT_TRANSLATE_NOOP("pwrb-core", "Accept command line and JSON-RPC commands"),
 QT_TRANSLATE_NOOP("pwrb-core", "Accept connections from outside (default: 1 if no -proxy or -connect)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Accept public REST requests (default: %u)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Add a node to connect to and attempt to keep the connection open"),
-QT_TRANSLATE_NOOP("pwrb-core", "Adding Wrapped Serials supply..."),
 QT_TRANSLATE_NOOP("pwrb-core", "Allow DNS lookups for -addnode, -seednode and -connect"),
 QT_TRANSLATE_NOOP("pwrb-core", "Always query for peer addresses via DNS lookup (default: %u)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Append comment to the user agent string"),
@@ -273,14 +246,10 @@ QT_TRANSLATE_NOOP("pwrb-core", "Attempt to force blockchain corruption recovery"
 QT_TRANSLATE_NOOP("pwrb-core", "Attempt to recover private keys from a corrupt wallet.dat"),
 QT_TRANSLATE_NOOP("pwrb-core", "Automatically create Tor hidden service (default: %d)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Block creation options:"),
-QT_TRANSLATE_NOOP("pwrb-core", "Calculating missing accumulators..."),
 QT_TRANSLATE_NOOP("pwrb-core", "Cannot create public spend input"),
 QT_TRANSLATE_NOOP("pwrb-core", "Cannot downgrade wallet"),
-QT_TRANSLATE_NOOP("pwrb-core", "Cannot resolve -bind address: '%s'"),
-QT_TRANSLATE_NOOP("pwrb-core", "Cannot resolve -externalip address: '%s'"),
-QT_TRANSLATE_NOOP("pwrb-core", "Cannot resolve -whitebind address: '%s'"),
-QT_TRANSLATE_NOOP("pwrb-core", "CoinSpend: Accumulator witness does not verify"),
-QT_TRANSLATE_NOOP("pwrb-core", "CoinSpend: failed check"),
+QT_TRANSLATE_NOOP("pwrb-core", "Cannot resolve -%s address: '%s'"),
+QT_TRANSLATE_NOOP("pwrb-core", "Cannot upgrade to HD wallet (already running HD support). Version: %d"),
 QT_TRANSLATE_NOOP("pwrb-core", "Connect only to the specified node(s)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Connect through SOCKS5 proxy"),
 QT_TRANSLATE_NOOP("pwrb-core", "Connect to a node to retrieve peer addresses, and disconnect"),
@@ -290,7 +259,6 @@ QT_TRANSLATE_NOOP("pwrb-core", "Copyright (C) 2014-%i The Dash Core Developers")
 QT_TRANSLATE_NOOP("pwrb-core", "Copyright (C) 2015-%i The PIVX Core Developers"),
 QT_TRANSLATE_NOOP("pwrb-core", "Corrupted block database detected"),
 QT_TRANSLATE_NOOP("pwrb-core", "Could not parse masternode.conf"),
-QT_TRANSLATE_NOOP("pwrb-core", "Couldn't generate the accumulator witness"),
 QT_TRANSLATE_NOOP("pwrb-core", "Debugging/Testing options:"),
 QT_TRANSLATE_NOOP("pwrb-core", "Delete blockchain folders and resync from scratch"),
 QT_TRANSLATE_NOOP("pwrb-core", "Disable OS notifications for incoming transactions (default: %u)"),
@@ -301,8 +269,6 @@ QT_TRANSLATE_NOOP("pwrb-core", "Display verbose coin stake messages in the debug
 QT_TRANSLATE_NOOP("pwrb-core", "Do not load the wallet and disable wallet RPC calls"),
 QT_TRANSLATE_NOOP("pwrb-core", "Do you want to rebuild the block database now?"),
 QT_TRANSLATE_NOOP("pwrb-core", "Done loading"),
-QT_TRANSLATE_NOOP("pwrb-core", "Enable automatic Zerocoin minting (0-1, default: %u)"),
-QT_TRANSLATE_NOOP("pwrb-core", "Enable precomputation of zPWRB spends and stakes (0-1, default %u)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Enable publish hash block in <address>"),
 QT_TRANSLATE_NOOP("pwrb-core", "Enable publish hash transaction (locked via SwiftX) in <address>"),
 QT_TRANSLATE_NOOP("pwrb-core", "Enable publish hash transaction in <address>"),
@@ -321,14 +287,13 @@ QT_TRANSLATE_NOOP("pwrb-core", "Error opening block database"),
 QT_TRANSLATE_NOOP("pwrb-core", "Error reading from database, shutting down."),
 QT_TRANSLATE_NOOP("pwrb-core", "Error writing zerocoinDB to disk"),
 QT_TRANSLATE_NOOP("pwrb-core", "Error"),
+QT_TRANSLATE_NOOP("pwrb-core", "Error: "),
 QT_TRANSLATE_NOOP("pwrb-core", "Error: A fatal internal error occured, see debug.log for details"),
 QT_TRANSLATE_NOOP("pwrb-core", "Error: A fatal internal error occurred, see debug.log for details"),
 QT_TRANSLATE_NOOP("pwrb-core", "Error: Disk space is low!"),
 QT_TRANSLATE_NOOP("pwrb-core", "Error: No valid utxo!"),
 QT_TRANSLATE_NOOP("pwrb-core", "Error: Unsupported argument -tor found, use -onion."),
 QT_TRANSLATE_NOOP("pwrb-core", "Error: Wallet locked, unable to create transaction!"),
-QT_TRANSLATE_NOOP("pwrb-core", "Failed to calculate accumulator checkpoint"),
-QT_TRANSLATE_NOOP("pwrb-core", "Failed to create mint"),
 QT_TRANSLATE_NOOP("pwrb-core", "Failed to find Zerocoins in wallet.dat"),
 QT_TRANSLATE_NOOP("pwrb-core", "Failed to listen on any port. Use -listen=0 if you want this."),
 QT_TRANSLATE_NOOP("pwrb-core", "Failed to parse host:port string"),
@@ -351,12 +316,8 @@ QT_TRANSLATE_NOOP("pwrb-core", "Initialization sanity check failed. PWRB Core is
 QT_TRANSLATE_NOOP("pwrb-core", "Insufficient funds"),
 QT_TRANSLATE_NOOP("pwrb-core", "Insufficient funds."),
 QT_TRANSLATE_NOOP("pwrb-core", "Invalid -onion address or hostname: '%s'"),
-QT_TRANSLATE_NOOP("pwrb-core", "Invalid amount for -maxtxfee=<amount>: '%s'"),
-QT_TRANSLATE_NOOP("pwrb-core", "Invalid amount for -minrelaytxfee=<amount>: '%s'"),
-QT_TRANSLATE_NOOP("pwrb-core", "Invalid amount for -mintxfee=<amount>: '%s'"),
+QT_TRANSLATE_NOOP("pwrb-core", "Invalid amount for -%s=<amount>: '%s'"),
 QT_TRANSLATE_NOOP("pwrb-core", "Invalid amount for -paytxfee=<amount>: '%s' (must be at least %s)"),
-QT_TRANSLATE_NOOP("pwrb-core", "Invalid amount for -paytxfee=<amount>: '%s'"),
-QT_TRANSLATE_NOOP("pwrb-core", "Invalid amount for -reservebalance=<amount>"),
 QT_TRANSLATE_NOOP("pwrb-core", "Invalid amount"),
 QT_TRANSLATE_NOOP("pwrb-core", "Invalid masternodeprivkey. Please see documenation."),
 QT_TRANSLATE_NOOP("pwrb-core", "Invalid netmask specified in -whitelist: '%s'"),
@@ -367,16 +328,17 @@ QT_TRANSLATE_NOOP("pwrb-core", "Line: %d"),
 QT_TRANSLATE_NOOP("pwrb-core", "Listen for JSON-RPC connections on <port> (default: %u or testnet: %u)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Listen for connections on <port> (default: %u or testnet: %u)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Loading addresses..."),
+QT_TRANSLATE_NOOP("pwrb-core", "Loading banlist..."),
 QT_TRANSLATE_NOOP("pwrb-core", "Loading block index..."),
 QT_TRANSLATE_NOOP("pwrb-core", "Loading budget cache..."),
 QT_TRANSLATE_NOOP("pwrb-core", "Loading masternode cache..."),
 QT_TRANSLATE_NOOP("pwrb-core", "Loading masternode payment cache..."),
 QT_TRANSLATE_NOOP("pwrb-core", "Loading sporks..."),
-QT_TRANSLATE_NOOP("pwrb-core", "Loading wallet... (%3.2f %%)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Loading wallet..."),
 QT_TRANSLATE_NOOP("pwrb-core", "Location of the auth cookie (default: data dir)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Lock masternodes from masternode configuration file (default: %u)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Lookup(): Invalid -proxy address or hostname: '%s'"),
+QT_TRANSLATE_NOOP("pwrb-core", "MNs synchronization pending..."),
 QT_TRANSLATE_NOOP("pwrb-core", "Maintain at most <n> connections to peers (default: %u)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Masternode options:"),
 QT_TRANSLATE_NOOP("pwrb-core", "Maximum per-connection receive buffer, <n>*1000 bytes (default: %u)"),
@@ -388,11 +350,12 @@ QT_TRANSLATE_NOOP("pwrb-core", "Node relay options:"),
 QT_TRANSLATE_NOOP("pwrb-core", "Not enough file descriptors available."),
 QT_TRANSLATE_NOOP("pwrb-core", "Number of automatic wallet backups (default: 10)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Number of custom location backups to retain (default: %d)"),
+QT_TRANSLATE_NOOP("pwrb-core", "On first run, create a legacy wallet instead of a HD wallet"),
 QT_TRANSLATE_NOOP("pwrb-core", "Only accept block chain matching built-in checkpoints (default: %u)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Only connect to nodes in network <net> (ipv4, ipv6 or onion)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Options:"),
 QT_TRANSLATE_NOOP("pwrb-core", "Password for JSON-RPC connections"),
-QT_TRANSLATE_NOOP("pwrb-core", "Percentage of automatically minted Zerocoin  (1-100, default: %u)"),
+QT_TRANSLATE_NOOP("pwrb-core", "Peers are being disconnected due time differences."),
 QT_TRANSLATE_NOOP("pwrb-core", "Preparing for resync..."),
 QT_TRANSLATE_NOOP("pwrb-core", "Prepend debug output with timestamp (default: %u)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Print version and exit"),
@@ -402,11 +365,7 @@ QT_TRANSLATE_NOOP("pwrb-core", "Randomly drop 1 of every <n> network messages"),
 QT_TRANSLATE_NOOP("pwrb-core", "Randomly fuzz 1 of every <n> network messages"),
 QT_TRANSLATE_NOOP("pwrb-core", "Rebuild block chain index from current blk000??.dat files"),
 QT_TRANSLATE_NOOP("pwrb-core", "Recalculating PWRB supply..."),
-QT_TRANSLATE_NOOP("pwrb-core", "Recalculating minted ZPWRB..."),
-QT_TRANSLATE_NOOP("pwrb-core", "Recalculating spent ZPWRB..."),
-QT_TRANSLATE_NOOP("pwrb-core", "Receive and display P2P network alerts (default: %u)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Reindex the PWRB and zPWRB money supply statistics"),
-QT_TRANSLATE_NOOP("pwrb-core", "Reindex the accumulator database"),
 QT_TRANSLATE_NOOP("pwrb-core", "Reindexing zerocoin database..."),
 QT_TRANSLATE_NOOP("pwrb-core", "Reindexing zerocoin failed"),
 QT_TRANSLATE_NOOP("pwrb-core", "Relay and mine data carrier transactions (default: %u)"),
@@ -419,7 +378,6 @@ QT_TRANSLATE_NOOP("pwrb-core", "Run a thread to flush wallet periodically (defau
 QT_TRANSLATE_NOOP("pwrb-core", "Run in the background as a daemon and accept commands"),
 QT_TRANSLATE_NOOP("pwrb-core", "Selected coins value is less than payment target"),
 QT_TRANSLATE_NOOP("pwrb-core", "Send transactions as zero-fee transactions if possible (default: %u)"),
-QT_TRANSLATE_NOOP("pwrb-core", "Session timed out."),
 QT_TRANSLATE_NOOP("pwrb-core", "Set database cache size in megabytes (%d to %d, default: %d)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Set external address:port to get to this masternode (example: %s)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Set key pool size to <n> (default: %u)"),
@@ -431,7 +389,6 @@ QT_TRANSLATE_NOOP("pwrb-core", "Set the number of threads to service RPC calls (
 QT_TRANSLATE_NOOP("pwrb-core", "Sets the DB_PRIVATE flag in the wallet db environment (default: %u)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Show all debugging options (usage: --help -help-debug)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Shrink debug.log file on client startup (default: 1 when no -debug)"),
-QT_TRANSLATE_NOOP("pwrb-core", "Signing timed out."),
 QT_TRANSLATE_NOOP("pwrb-core", "Signing transaction failed"),
 QT_TRANSLATE_NOOP("pwrb-core", "Specify configuration file (default: %s)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Specify connection timeout in milliseconds (minimum: 1, default: %d)"),
@@ -444,18 +401,14 @@ QT_TRANSLATE_NOOP("pwrb-core", "Spend Valid"),
 QT_TRANSLATE_NOOP("pwrb-core", "Spend unconfirmed change when sending transactions (default: %u)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Staking options:"),
 QT_TRANSLATE_NOOP("pwrb-core", "Stop running after importing blocks from disk (default: %u)"),
-QT_TRANSLATE_NOOP("pwrb-core", "Support the zerocoin light node protocol (default: %u)"),
 QT_TRANSLATE_NOOP("pwrb-core", "SwiftX options:"),
 QT_TRANSLATE_NOOP("pwrb-core", "Synchronization failed"),
 QT_TRANSLATE_NOOP("pwrb-core", "Synchronization finished"),
-QT_TRANSLATE_NOOP("pwrb-core", "Synchronization pending..."),
 QT_TRANSLATE_NOOP("pwrb-core", "Synchronizing budgets..."),
 QT_TRANSLATE_NOOP("pwrb-core", "Synchronizing masternode winners..."),
 QT_TRANSLATE_NOOP("pwrb-core", "Synchronizing masternodes..."),
 QT_TRANSLATE_NOOP("pwrb-core", "Synchronizing sporks..."),
 QT_TRANSLATE_NOOP("pwrb-core", "Syncing zPWRB wallet..."),
-QT_TRANSLATE_NOOP("pwrb-core", "The coin spend has been used"),
-QT_TRANSLATE_NOOP("pwrb-core", "The transaction did not verify"),
 QT_TRANSLATE_NOOP("pwrb-core", "This help message"),
 QT_TRANSLATE_NOOP("pwrb-core", "This is experimental software."),
 QT_TRANSLATE_NOOP("pwrb-core", "This is intended for regression testing tools and app development."),
@@ -474,9 +427,11 @@ QT_TRANSLATE_NOOP("pwrb-core", "Unable to bind to %s on this computer (bind retu
 QT_TRANSLATE_NOOP("pwrb-core", "Unable to find transaction containing mint %s"),
 QT_TRANSLATE_NOOP("pwrb-core", "Unable to find transaction containing mint, txHash: %s"),
 QT_TRANSLATE_NOOP("pwrb-core", "Unable to generate initial key"),
+QT_TRANSLATE_NOOP("pwrb-core", "Unable to generate keys"),
 QT_TRANSLATE_NOOP("pwrb-core", "Unable to sign spork message, wrong key?"),
 QT_TRANSLATE_NOOP("pwrb-core", "Unable to start HTTP server. See debug log for details."),
 QT_TRANSLATE_NOOP("pwrb-core", "Unknown network specified in -onlynet: '%s'"),
+QT_TRANSLATE_NOOP("pwrb-core", "Unsupported logging category %s=%s."),
 QT_TRANSLATE_NOOP("pwrb-core", "Upgrade wallet to latest format"),
 QT_TRANSLATE_NOOP("pwrb-core", "Use UPnP to map the listening port (default: %u)"),
 QT_TRANSLATE_NOOP("pwrb-core", "Use UPnP to map the listening port (default: 1 when listening)"),
@@ -500,8 +455,8 @@ QT_TRANSLATE_NOOP("pwrb-core", "You don't have enough Zerocoins in your wallet")
 QT_TRANSLATE_NOOP("pwrb-core", "You need to rebuild the database using -reindex to change -txindex"),
 QT_TRANSLATE_NOOP("pwrb-core", "Zapping all transactions from wallet..."),
 QT_TRANSLATE_NOOP("pwrb-core", "ZeroMQ notification options:"),
+QT_TRANSLATE_NOOP("pwrb-core", "Zerocoin minting available only on regtest"),
 QT_TRANSLATE_NOOP("pwrb-core", "Zerocoin options:"),
-QT_TRANSLATE_NOOP("pwrb-core", "could not get lock on cs_spendcache"),
 QT_TRANSLATE_NOOP("pwrb-core", "isValid(): Invalid -proxy address or hostname: '%s'"),
 QT_TRANSLATE_NOOP("pwrb-core", "on startup"),
 QT_TRANSLATE_NOOP("pwrb-core", "wallet.dat corrupt, salvage failed"),

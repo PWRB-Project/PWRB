@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2015-2019 The PIVX developers
+// Copyright (c) 2015-2020 The PIVX developers
 // Copyright (c) 2020 The PWRDev developers
 // Copyright (c) 2020 The powerbalt developers
 // Distributed under the MIT/X11 software license, see the accompanying
@@ -132,6 +132,7 @@ bool GetLocal(CService& addr, const CNetAddr* paddrPeer = NULL);
 bool IsReachable(enum Network net);
 bool IsReachable(const CNetAddr& addr);
 CAddress GetLocalAddress(const CNetAddr* paddrPeer = NULL);
+bool validateMasternodeIP(const std::string& addrStr);          // valid, reachable and routable address
 
 
 extern bool fDiscover;

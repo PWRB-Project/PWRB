@@ -1,4 +1,4 @@
-// Copyright (c) 2019 The PIVX developers
+// Copyright (c) 2019-2020 The PIVX developers
 // Copyright (c) 2020 The PWRDev developers
 // Copyright (c) 2020 The powerbalt developers
 // Distributed under the MIT software license, see the accompanying
@@ -59,7 +59,7 @@ SendMultiRow::SendMultiRow(PWidget *parent) :
     iconNumber->move(posIconX, posIconY);
 
     connect(ui->lineEditAmount, &QLineEdit::textChanged, this, &SendMultiRow::amountChanged);
-    connect(ui->lineEditAddress, &QLineEdit::textChanged, this, &SendMultiRow::addressChanged);
+    connect(ui->lineEditAddress, &QLineEdit::textChanged, [this](){addressChanged(ui->lineEditAddress->text());});
     connect(btnContact, &QAction::triggered, [this](){Q_EMIT onContactsClicked(this);});
     connect(ui->btnMenu, &QPushButton::clicked, [this](){Q_EMIT onMenuClicked(this);});
 }
@@ -85,9 +85,8 @@ CAmount SendMultiRow::getAmountValue(QString amount){
     return isValid ? value : -1;
 }
 
-bool SendMultiRow::addressChanged(const QString& str)
+bool SendMultiRow::addressChanged(const QString& str, bool fOnlyValidate)
 {
-    ui->lineEditDescription->clear();
     if(!str.isEmpty()) {
         QString trimmedStr = str.trimmed();
         const bool valid = walletModel->validateAddress(trimmedStr, this->onlyStakingAddressAccepted);
@@ -110,9 +109,11 @@ bool SendMultiRow::addressChanged(const QString& str)
             }
         } else {
             setCssProperty(ui->lineEditAddress, "edit-primary-multi-book");
-            QString label = walletModel->getAddressTableModel()->labelForAddress(trimmedStr);
-            if (!label.isNull()){
-                ui->lineEditDescription->setText(label);
+            if (!fOnlyValidate) {
+                QString label = walletModel->getAddressTableModel()->labelForAddress(trimmedStr);
+                if (!label.isEmpty()) {
+                    ui->lineEditDescription->setText(label);
+                }
             }
         }
         updateStyle(ui->lineEditAddress);
@@ -164,7 +165,7 @@ bool SendMultiRow::validate()
         retval = false;
         setCssProperty(ui->lineEditAddress, "edit-primary-multi-book-error", true);
     } else
-        retval = addressChanged(address);
+        retval = addressChanged(address, true);
 
     CAmount value = getAmountValue(ui->lineEditAmount->text());
 

@@ -1,4 +1,3 @@
-// Copyright (c) 2019-2020 The PIVX developers
 // Copyright (c) 2020 The CryptoDev developers
 // Copyright (c) 2020 The powerbalt developers
 // Distributed under the MIT software license, see the accompanying
@@ -563,22 +562,24 @@ void BetWidget::updateEntryLabels(QList<SendCoinsRecipient> recipients){
 
 void BetWidget::onChangeAddressClicked(){
     showHideOp(true);
-    SendChangeAddressDialog* dialog = new SendChangeAddressDialog(window);
-    if(!boost::get<CNoDestination>(&CoinControlDialog::coinControl->destChange)){
+    SendChangeAddressDialog* dialog = new SendChangeAddressDialog(window, walletModel);
+    if (!boost::get<CNoDestination>(&CoinControlDialog::coinControl->destChange)) {
         dialog->setAddress(QString::fromStdString(CBitcoinAddress(CoinControlDialog::coinControl->destChange).ToString()));
     }
-    if(openDialogWithOpaqueBackgroundY(dialog, window, 3, 5)) {
-        if(dialog->selected) {
-            QString ret;
-            if (dialog->getAddress(walletModel, &ret)) {
-                CoinControlDialog::coinControl->destChange = CBitcoinAddress(ret.toStdString()).Get();
-                ui->btnChangeAddress->setActive(true);
-            }else{
-                inform(tr("Invalid change address"));
-                ui->btnChangeAddress->setActive(false);
-            }
+    if (openDialogWithOpaqueBackgroundY(dialog, window, 3, 5)) {
+        CBitcoinAddress address(dialog->getAddress().toStdString());
+
+        // Ask if it's what the user really wants
+        if (!walletModel->isMine(address) &&
+            !ask(tr("Warning!"), tr("The change address doesn't belong to this wallet.\n\nDo you want to continue?"))) {
+            return;
         }
+        CoinControlDialog::coinControl->destChange = address.Get();
+        ui->btnChangeAddress->setActive(true);
     }
+    // check if changeAddress has been reset to NoDestination (or wasn't set at all)
+    if (boost::get<CNoDestination>(&CoinControlDialog::coinControl->destChange))
+        ui->btnChangeAddress->setActive(false);
     dialog->deleteLater();
 }
 
@@ -620,8 +621,7 @@ void BetWidget::onOpenUriClicked(){
 void BetWidget::onChangeCustomFeeClicked(){
     showHideOp(true);
     if (!customFeeDialog) {
-        customFeeDialog = new SendCustomFeeDialog(window);
-        customFeeDialog->setWalletModel(walletModel);
+        customFeeDialog = new SendCustomFeeDialog(window, walletModel);
     }
     if (openDialogWithOpaqueBackgroundY(customFeeDialog, window, 3, 5)){
         const CAmount& nFeePerKb = customFeeDialog->getFeeRate().GetFeePerK();
@@ -689,7 +689,7 @@ void BetWidget::onContactsClicked(BetMultiRow* entry){
         return;
     }
 
-    int height = (contactsSize <= 2) ? entry->getEditHeight() * ( 2 * (contactsSize + 1 )) : entry->getEditHeight() * 4;
+    int height = (contactsSize <= 2) ? entry->getEditHeight() * ( 2 * (contactsSize + 1 )) : entry->getEditHeight() * 6;
     int width = entry->getEditWidth();
 
     if(!menuContacts){
@@ -701,7 +701,8 @@ void BetWidget::onContactsClicked(BetMultiRow* entry){
         menuContacts->setWalletModel(walletModel, AddressTableModel::Send);
         connect(menuContacts, &ContactsDropdown::contactSelected, [this](QString address, QString label){
             if(focusedEntry){
-                focusedEntry->setLabel(label);
+                if (label != "(no label)")
+                    focusedEntry->setLabel(label);
                 focusedEntry->setAddress(address);
             }
         });

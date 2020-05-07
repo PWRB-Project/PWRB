@@ -3446,17 +3446,18 @@ bool CheckColdStakeFreeOutput(const CTransaction& tx, const int nHeight)
 
         // if mnsync is incomplete, we cannot verify if this is a budget block.
         // so we check that the staker is not transferring value to the free output
-        // First try finding the previous transaction in database
-        CTransaction txPrev; uint256 hashBlock;
-        if (!GetTransaction(tx.vin[0].prevout.hash, txPrev, hashBlock, true))
-            return error("%s : read txPrev failed: %s",  __func__, tx.vin[0].prevout.hash.GetHex());
-        CAmount amtIn = txPrev.vout[tx.vin[0].prevout.n].nValue + GetBlockValue(nHeight - 1);
-        CAmount amtOut = 0;
-        for (unsigned int i = 1; i < outs-1; i++) amtOut += tx.vout[i].nValue;
-        if (amtOut != amtIn)
-            return error("%s: non-free outputs value %d less than required %d", __func__, amtOut, amtIn);
-        else
+        if (!masternodeSync.IsSynced()) {
+            // First try finding the previous transaction in database
+            CTransaction txPrev; uint256 hashBlock;
+            if (!GetTransaction(tx.vin[0].prevout.hash, txPrev, hashBlock, true))
+                return error("%s : read txPrev failed: %s",  __func__, tx.vin[0].prevout.hash.GetHex());
+            CAmount amtIn = txPrev.vout[tx.vin[0].prevout.n].nValue + GetBlockValue(nHeight - 1);
+            CAmount amtOut = 0;
+            for (unsigned int i = 1; i < outs-1; i++) amtOut += tx.vout[i].nValue;
+            if (amtOut != amtIn)
+                return error("%s: non-free outputs value %d less than required %d", __func__, amtOut, amtIn);
             return true;
+        }
 
         // Check that this is indeed a superblock.
         if (budget.IsBudgetPaymentBlock(nHeight)) {
@@ -3599,8 +3600,7 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
                         REJECT_INVALID, "bad-cb-payee");
             }
         } else {
-            if (logCategories != BCLog::NONE)
-                LogPrintf("%s: Masternode/Budget payment checks skipped on sync\n", __func__);
+            LogPrintf("%s: Masternode/Budget payment checks skipped on sync\n", __func__);
         }
     }
 
@@ -4264,9 +4264,11 @@ bool ProcessNewBlock(CValidationState& state, CNode* pfrom, CBlock* pblock, CDis
     }
 
     if (pwalletMain) {
+        /* disable multisend
         // If turned on MultiSend will send a transaction (or more) on the after maturity of a stake
         if (pwalletMain->isMultiSendEnabled())
             pwalletMain->MultiSend();
+        */
 
         // If turned on Auto Combine will scan wallet for dust to combine
         if (pwalletMain->fCombineDust)
@@ -5571,8 +5573,7 @@ bool static ProcessMessage(CNode* pfrom, std::string strCommand, CDataStream& vR
         // we must use CBlocks, as CBlockHeaders won't include the 0x00 nTx count at the end
         std::vector<CBlock> vHeaders;
         int nLimit = MAX_HEADERS_RESULTS;
-        if (logCategories != BCLog::NONE)
-            LogPrintf("getheaders %d to %s from peer=%d\n", (pindex ? pindex->nHeight : -1), hashStop.ToString(), pfrom->id);
+        LogPrintf("getheaders %d to %s from peer=%d\n", (pindex ? pindex->nHeight : -1), hashStop.ToString(), pfrom->id);
         for (; pindex; pindex = chainActive.Next(pindex)) {
             vHeaders.push_back(pindex->GetBlockHeader());
             if (--nLimit <= 0 || pindex->GetBlockHash() == hashStop)

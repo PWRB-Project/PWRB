@@ -1,4 +1,4 @@
-// Copyright (c) 2019 The PIVX developers
+// Copyright (c) 2019-2020 The PIVX developers
 // Copyright (c) 2020 The PWRDev developers
 // Copyright (c) 2020 The powerbalt developers
 // Distributed under the MIT software license, see the accompanying
@@ -47,13 +47,16 @@ LoadingDialog::LoadingDialog(QWidget *parent) :
     ui->labelDots->setProperty("cssClass", "text-loading");
 }
 
-void LoadingDialog::execute(Runnable *runnable, int type){
+void LoadingDialog::execute(Runnable *runnable, int type, std::unique_ptr<WalletModel::UnlockContext> pctx)
+{
     loadingTimer = new QTimer(this);
     connect(loadingTimer, &QTimer::timeout, this, &LoadingDialog::loadingTextChange);
     loadingTimer->start(250);
 
     QThread* thread = new QThread;
-    Worker* worker = new Worker(runnable, type);
+    Worker* worker = (pctx == nullptr ?
+                      new Worker(runnable, type) :
+                      new WalletWorker(runnable, type, std::move(pctx)));
     worker->moveToThread(thread);
     connect(thread, &QThread::started, worker, &Worker::process);
     connect(worker, &Worker::finished, thread, &QThread::quit);

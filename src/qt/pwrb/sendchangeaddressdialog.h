@@ -1,4 +1,4 @@
-// Copyright (c) 2019 The PIVX developers
+// Copyright (c) 2019-2020 The PIVX developers
 // Copyright (c) 2020 The PWRDev developers
 // Copyright (c) 2020 The powerbalt developers
 // Distributed under the MIT software license, see the accompanying
@@ -8,6 +8,7 @@
 #define SENDCHANGEADDRESSDIALOG_H
 
 #include <QDialog>
+#include "qt/pwrb/snackbar.h"
 
 class WalletModel;
 
@@ -20,16 +21,23 @@ class SendChangeAddressDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit SendChangeAddressDialog(QWidget *parent = nullptr);
+    explicit SendChangeAddressDialog(QWidget* parent, WalletModel* model);
     ~SendChangeAddressDialog();
 
     void setAddress(QString address);
-    bool getAddress(WalletModel *model, QString *retAddress);
-    bool selected = false;
+    QString getAddress() const;
 
-    void showEvent(QShowEvent *event) override;
+    void showEvent(QShowEvent* event) override;
+
 private:
+    WalletModel* walletModel;
     Ui::SendChangeAddressDialog *ui;
+    SnackBar *snackBar = nullptr;
+    void inform(const QString& text);
+
+private Q_SLOTS:
+    void reset();
+    void save();
 };
 
 #endif // SENDCHANGEADDRESSDIALOG_H

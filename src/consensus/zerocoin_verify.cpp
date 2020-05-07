@@ -201,6 +201,8 @@ bool RecalculatePWRBSupply(int nHeightStart, bool fSkipZpwrb)
         return false;
 
     CBlockIndex* pindex = chainActive[nHeightStart];
+    //if (nHeightStart == consensus.height_start_ZC)
+        //nMoneySupply = nMoneySupply;
 
     if (!fSkipZpwrb) {
         // initialize supply to 0

@@ -1,6 +1,6 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2019 The PIVX developers
+// Copyright (c) 2015-2020 The PIVX developers
 // Copyright (c) 2020 The PWRDev developers
 // Copyright (c) 2020 The powerbalt developers
 // Distributed under the MIT/X11 software license, see the accompanying
@@ -276,7 +276,7 @@ QString TransactionDesc::toHTML(CWallet* wallet, CWalletTx& wtx, TransactionReco
     //
     // Debug view
     //
-    if (logCategories != BCLog::NONE) {
+    if (!GetBoolArg("-shrinkdebugfile", g_logger->DefaultShrinkDebugFile())) {
         strHTML += "<hr><br>" + tr("Debug information") + "<br><br>";
         for (const CTxIn& txin : wtx.vin)
             if (wallet->IsMine(txin))

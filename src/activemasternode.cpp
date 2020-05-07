@@ -1,5 +1,5 @@
 // Copyright (c) 2014-2016 The Dash developers
-// Copyright (c) 2015-2019 The PIVX developers
+// Copyright (c) 2015-2020 The PIVX developers
 // Copyright (c) 2020 The PWRDev developers
 // Copyright (c) 2020 The powerbalt developers
 // Distributed under the MIT/X11 software license, see the accompanying
@@ -25,7 +25,7 @@ void CActiveMasternode::ManageStatus()
 
     if (!fMasterNode) return;
 
-    if (logCategories != BCLog::NONE) LogPrintf("CActiveMasternode::ManageStatus() - Begin\n");
+    LogPrint(BCLog::MASTERNODE, "CActiveMasternode::ManageStatus() - Begin\n");
 
     //need correct blocks to send ping
     if (!Params().IsRegTestNet() && !masternodeSync.IsBlockchainSynced()) {

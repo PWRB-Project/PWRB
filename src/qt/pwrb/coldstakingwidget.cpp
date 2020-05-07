@@ -336,8 +336,12 @@ void ColdStakingWidget::onContactsClicked()
         pos.setY((pos.y() + (height - 14) * 4));
     }
 
-    pos.setX(pos.x() + 40);
-    height = (contactsSize <= 2) ? height * ( 2 * (contactsSize + 1 )) : height * 4;
+    int margin1, margin2;
+    ui->verticalLayoutTop->getContentsMargins(&margin1, nullptr, nullptr, nullptr);
+    ui->vContainerOwner->getContentsMargins(&margin2, nullptr, nullptr, nullptr);
+    pos.setX(pos.x() + margin1 + margin2);
+
+    height = (contactsSize <= 2) ? height * ( 2 * (contactsSize + 1 )) : height * 6;
 
     if (!menuContacts) {
         menuContacts = new ContactsDropdown(
@@ -640,7 +644,7 @@ void ColdStakingWidget::handleAddressClicked(const QModelIndex &rIndex)
         connect(this->menu, &TooltipMenu::message, this, &AddressesWidget::message);
         connect(this->menu, &TooltipMenu::onEditClicked, this, &ColdStakingWidget::onEditClicked);
         connect(this->menu, &TooltipMenu::onDeleteClicked, this, &ColdStakingWidget::onDeleteClicked);
-        //connect(this->menu, &TooltipMenu::onCopyClicked, this, &ColdStakingWidget::onLabelClicked);
+        connect(this->menu, &TooltipMenu::onCopyClicked, [this](){onLabelClicked();});
         connect(this->menu, &TooltipMenu::onLastClicked, this, &ColdStakingWidget::onCopyOwnerClicked);
     } else {
         this->menu->hide();

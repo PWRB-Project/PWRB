@@ -6,10 +6,10 @@
 
 #include "qt/pwrb/masternodeswidget.h"
 #include "qt/pwrb/forms/ui_masternodeswidget.h"
+
 #include "qt/pwrb/qtutils.h"
 #include "qt/pwrb/mnrow.h"
 #include "qt/pwrb/mninfodialog.h"
-
 #include "qt/pwrb/masternodewizarddialog.h"
 
 #include "activemasternode.h"
@@ -21,7 +21,6 @@
 #include "masternodeman.h"
 #include "sync.h"
 #include "wallet/wallet.h"
-#include "walletmodel.h"
 #include "askpassphrasedialog.h"
 #include "util.h"
 #include "qt/pwrb/optionbutton.h"
@@ -265,21 +264,20 @@ bool MasterNodesWidget::startMN(CMasternodeConfig::CMasternodeEntry mne, std::st
 
 void MasterNodesWidget::onStartAllClicked(int type)
 {
-    WalletModel::UnlockContext ctx(walletModel->requestUnlock());
-    if (!ctx.isValid()) {
-        // Unlock wallet was cancelled
-        inform(tr("Cannot perform Mastenodes start, wallet locked"));
-        return;
-    }
     if (!Params().IsRegTestNet() && !checkMNsNetwork()) return;     // skip on RegNet: so we can test even if tier two not synced
 
     if (isLoading) {
         inform(tr("Background task is being executed, please wait"));
     } else {
+        std::unique_ptr<WalletModel::UnlockContext> pctx = MakeUnique<WalletModel::UnlockContext>(walletModel->requestUnlock());
+        if (!pctx->isValid()) {
+            warn(tr("Start ALL masternodes failed"), tr("Wallet unlock cancelled"));
+            return;
+        }
         isLoading = true;
-        if (!execute(type)) {
+        if (!execute(type, std::move(pctx))) {
             isLoading = false;
-            inform(tr("Cannot perform Mastenodes start"));
+            inform(tr("Cannot perform Masternodes start"));
         }
     }
 }
@@ -342,7 +340,7 @@ void MasterNodesWidget::onInfoMNClicked()
     WalletModel::UnlockContext ctx(walletModel->requestUnlock());
     if (!ctx.isValid()) {
         // Unlock wallet was cancelled
-        inform(tr("Cannot show Mastenode information, wallet locked"));
+        inform(tr("Cannot show Masternode information, wallet locked"));
         return;
     }
     showHideOp(true);
@@ -368,7 +366,7 @@ void MasterNodesWidget::onInfoMNClicked()
                                  "masternodeaddr=" + address + + "\n" +
                                  "masternodeprivkey=" + index.sibling(index.row(), MNModel::PRIV_KEY).data(Qt::DisplayRole).toString() + "\n";
             GUIUtil::setClipboard(exportedMN);
-            inform(tr("Masternode exported!, check your clipboard"));
+            inform(tr("Masternode data copied to the clipboard."));
         }
     }
 
@@ -483,7 +481,7 @@ void MasterNodesWidget::onCreateMNClicked()
     WalletModel::UnlockContext ctx(walletModel->requestUnlock());
     if (!ctx.isValid()) {
         // Unlock wallet was cancelled
-        inform(tr("Cannot create Mastenode controller, wallet locked"));
+        inform(tr("Cannot create Masternode controller, wallet locked"));
         return;
     }
 

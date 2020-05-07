@@ -1,5 +1,5 @@
 // Copyright (c) 2015 The Bitcoin Core developers
-// Copyright (c) 2018-2019 The PIVX developers
+// Copyright (c) 2018-2020 The PIVX developers
 // Copyright (c) 2020 The PWRDev developers
 // Copyright (c) 2020 The powerbalt developers
 // Distributed under the MIT software license, see the accompanying
@@ -394,8 +394,8 @@ bool InitHTTPServer()
     // Update libevent's log handling. Returns false if our version of
     // libevent doesn't support debug logging, in which case we should
     // clear the BCLog::LIBEVENT flag.
-    if (!UpdateHTTPServerLogging(logCategories & BCLog::LIBEVENT)) {
-        logCategories &= ~BCLog::LIBEVENT;
+    if (!UpdateHTTPServerLogging(g_logger->WillLogCategory(BCLog::LIBEVENT))) {
+        g_logger->DisableCategory(BCLog::LIBEVENT);
     }
 
 #ifdef WIN32

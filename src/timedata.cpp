@@ -1,5 +1,5 @@
 // Copyright (c) 2014-2017 The Bitcoin developers
-// Copyright (c) 2017-2019 The PIVX developers
+// Copyright (c) 2017-2020 The PIVX developers
 // Copyright (c) 2020 The PWRDev developers
 // Copyright (c) 2020 The powerbalt developers
 // Distributed under the MIT software license, see the accompanying
@@ -84,7 +84,7 @@ void AddTimeData(const CNetAddr& ip, int64_t nOffsetSample, int nOffsetLimit)
             LogPrintf("*** %s\n", strMessage);
             uiInterface.ThreadSafeMessageBox(strMessage, "", CClientUIInterface::MSG_ERROR);
         }
-        if (logCategories != BCLog::NONE) {
+        if (!GetBoolArg("-shrinkdebugfile", g_logger->DefaultShrinkDebugFile())) {
             for (int64_t n : vSorted)
                 LogPrintf("%+d  ", n);
             LogPrintf("|  ");

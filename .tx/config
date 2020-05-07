@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[PWRB-Project-translations.qt-translation-40x]
+[PWRB-Project-translations.qt-translation-41x]
 file_filter = src/qt/locale/pwrb_<lang>.ts
 source_file = src/qt/locale/pwrb_en.ts
 source_lang = en

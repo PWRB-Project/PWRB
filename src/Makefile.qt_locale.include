@@ -1,34 +1,14 @@
 QT_TS = \
-  qt/locale/pwrb_bg.ts \
-  qt/locale/pwrb_ca.ts \
-  qt/locale/pwrb_cs.ts \
-  qt/locale/pwrb_da.ts \
   qt/locale/pwrb_de.ts \
   qt/locale/pwrb_en.ts \
-  qt/locale/pwrb_en_GB.ts \
   qt/locale/pwrb_en_US.ts \
-  qt/locale/pwrb_eo.ts \
   qt/locale/pwrb_es.ts \
-  qt/locale/pwrb_es_ES.ts \
-  qt/locale/pwrb_fi.ts \
   qt/locale/pwrb_fr_FR.ts \
-  qt/locale/pwrb_hi_IN.ts \
-  qt/locale/pwrb_hr.ts \
   qt/locale/pwrb_hr_HR.ts \
   qt/locale/pwrb_it.ts \
-  qt/locale/pwrb_ja.ts \
   qt/locale/pwrb_ko_KR.ts \
-  qt/locale/pwrb_lt_LT.ts \
   qt/locale/pwrb_nl.ts \
   qt/locale/pwrb_pl.ts \
-  qt/locale/pwrb_pt.ts \
-  qt/locale/pwrb_pt_BR.ts \
-  qt/locale/pwrb_ro_RO.ts \
   qt/locale/pwrb_ru.ts \
-  qt/locale/pwrb_sk.ts \
-  qt/locale/pwrb_sv.ts \
   qt/locale/pwrb_tr.ts \
-  qt/locale/pwrb_uk.ts \
-  qt/locale/pwrb_vi.ts \
-  qt/locale/pwrb_zh_CN.ts \
-  qt/locale/pwrb_zh_TW.ts
+  qt/locale/pwrb_zh_CN.ts

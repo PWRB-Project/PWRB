@@ -35,7 +35,7 @@ BetMultiRow::BetMultiRow(PWidget *parent) :
     initCssEditLine(ui->lineEditDescription);
 
     connect(ui->lineEditAmount, &QLineEdit::textChanged, this, &BetMultiRow::amountChanged);
-    connect(ui->lineEditAddress, &QLineEdit::textChanged, [this](){addressChanged(ui->lineEditAddress->text());});
+    connect(ui->lineEditAddress, &QLineEdit::textChanged, this, &BetMultiRow::addressChanged);
 }
 
 void BetMultiRow::amountChanged(const QString& amount){
@@ -82,7 +82,7 @@ CAmount BetMultiRow::getAmountValue(QString amount){
     return isValid ? value : -1;
 }
 
-bool BetMultiRow::addressChanged(const QString& str, bool fOnlyValidate){
+bool BetMultiRow::addressChanged(const QString& str){
     if(!str.isEmpty()) {
         QString trimmedStr = str.trimmed();
         bool validBet = walletModel->validateBet(trimmedStr);
@@ -176,7 +176,7 @@ bool BetMultiRow::validate()
         retval = false;
         setCssProperty(ui->lineEditAddress, "edit-primary-multi-book-error", true);
     } else
-        retval = addressChanged(address, true);
+        retval = addressChanged(address);
 
     CAmount value = getAmountValue(ui->lineEditAmount->text());
 

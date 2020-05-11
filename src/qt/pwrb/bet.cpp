@@ -425,11 +425,11 @@ bool BetWidget::send(QList<SendCoinsRecipient> recipients){
         );
 
         if (sendStatus.status == WalletModel::OK) {
+            inform(tr("Bet Placed"));
             // if delegations were spent, update cachedBalance
             if (fStakeDelegationVoided)
                 cachedDelegatedBalance = walletModel->getDelegatedBalance();
             clearAll(false);
-            inform(tr("Bet Placed"));
             dialog->deleteLater();
             return true;
         }

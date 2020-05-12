@@ -367,7 +367,7 @@ bool BitcoinApplication::notify(QObject* receiver, QEvent* event)
     try {
         done = QApplication::notify(receiver, event);
     } catch (const std::exception& ex) {
-        LogPrint(BCLog::QT, "GUI: %s Exception: %s receiver: %s event: %s\n", ex.what(),receiver->objectName().toStdString(),event->type().Type);
+        LogPrint(BCLog::QT, "GUI: %s Exception: %s receiver: %s\n", ex.what(),receiver->objectName().toStdString());
     }
     return done;
 }

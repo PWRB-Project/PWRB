@@ -202,6 +202,8 @@ public:
     /// Create tutorial screen
     bool createTutorialScreen();
 
+    bool notify(QObject* receiver, QEvent* event);
+
     /// Request core initialization
     void requestInitialize();
     /// Request core shutdown

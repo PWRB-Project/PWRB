@@ -145,9 +145,9 @@ void DebugMessageHandler(QtMsgType type, const QMessageLogContext& context, cons
 {
     QT_MESSAGELOGCONTEXT(context);
     if (type == QtDebugMsg) {
-        LogPrint(BCLog::QT, "GUI: %s File: %s Line: %s Function: %s\n", msg.toStdString(),std::string(context.file),std::to_string(context.line),std::string(context.function));
+        LogPrint(BCLog::QT, "GUI: %s File: %s Line: %s Function: %s\n", msg.toStdString(),std::string(context->file),std::to_string(context->line),std::string(context->function));
     } else {
-        LogPrintf("GUI: %s File: %s Line: %s Function: %s\n", msg.toStdString(),std::string(context.file),std::to_string(context.line),std::string(context.function));
+        LogPrintf("GUI: %s File: %s Line: %s Function: %s\n", msg.toStdString(),std::string(context->file),std::to_string(context->line),std::string(context->function));
     }
 }
 
@@ -367,7 +367,7 @@ bool BitcoinApplication::notify(QObject* receiver, QEvent* event)
     try {
         done = QApplication::notify(receiver, event);
     } catch (const std::exception& ex) {
-        LogPrint(BCLog::QT, "GUI: %s Exception: %s receiver: %s event: %s\n", ex.what(),receiver.objectName.toStdString(),event.type().Type);
+        LogPrint(BCLog::QT, "GUI: %s Exception: %s receiver: %s event: %s\n", ex.what(),receiver->objectName.toStdString(),event->type().Type);
     }
     return done;
 }

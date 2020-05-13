@@ -375,8 +375,11 @@ void BetWidget::onSendClicked(){
         return;
     }
 
+    ask(tr("Debugging!"), tr("About to send bet transaction.\n\nDo you want to continue?"));
     if((sendPwrb) ? send(recipients) : sendZpwrb(recipients)) {
+        ask(tr("Debugging!"), tr("About to updateEntryLabels.\n\nDo you want to continue?"));
         updateEntryLabels(recipients);
+        ask(tr("Debugging!"), tr("Finished updateEntryLabels.\n\nDo you want to continue?"));
     }
 }
 
@@ -387,6 +390,7 @@ bool BetWidget::send(QList<SendCoinsRecipient> recipients){
 
     prepareStatus = walletModel->prepareTransaction(currentTransaction, CoinControlDialog::coinControl, fDelegationsChecked);
 
+    ask(tr("Debugging!"), tr("About to ProcessSendCoinsReturnAndInform.\n\nDo you want to continue?"));
     // process prepareStatus and on error generate message shown to user
     GuiTransactionsUtils::ProcessSendCoinsReturnAndInform(
             this,
@@ -396,6 +400,7 @@ bool BetWidget::send(QList<SendCoinsRecipient> recipients){
                                          currentTransaction.getTransactionFee()),
             true
     );
+    ask(tr("Debugging!"), tr("Left ProcessSendCoinsReturnAndInform.\n\nDo you want to continue?"));
 
     if (prepareStatus.status != WalletModel::OK) {
         inform(tr("Cannot create transaction."));
@@ -418,12 +423,13 @@ bool BetWidget::send(QList<SendCoinsRecipient> recipients){
         // now send the prepared transaction
         WalletModel::SendCoinsReturn sendStatus = dialog->getStatus();
         // process sendStatus and on error generate message shown to user
+        ask(tr("Debugging!"), tr("Executing ProcessSendCoinsReturnAndInform.\n\nDo you want to continue?"));
         GuiTransactionsUtils::ProcessSendCoinsReturnAndInform(
                 this,
                 sendStatus,
                 walletModel
         );
-
+        ask(tr("Debugging!"), tr("Verifying the walletmodel is OK.\n\nDo you want to continue?"));
         if (sendStatus.status == WalletModel::OK) {
             inform(tr("Bet Placed"));
             // if delegations were spent, update cachedBalance
@@ -435,6 +441,7 @@ bool BetWidget::send(QList<SendCoinsRecipient> recipients){
         }
     }
 
+    ask(tr("Debugging!"), tr("We shouldn't have made it here.\n\nDo you want to continue?"));
     dialog->deleteLater();
     return false;
 }

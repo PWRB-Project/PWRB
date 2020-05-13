@@ -143,11 +143,11 @@ static void initTranslations(QTranslator& qtTranslatorBase, QTranslator& qtTrans
 /* qDebug() message handler --> debug.log */
 void DebugMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
-    QT_MESSAGELOGCONTEXT(context);
+    Q_UNUSED(context);
     if (type == QtDebugMsg) {
-        LogPrint(BCLog::QT, "GUI: %s File: %s Line: %s Function: %s\n", msg.toStdString(),std::string(context.file),std::to_string(context.line),std::string(context.function));
+        LogPrint(BCLog::QT, "GUI: %s\n", msg.toStdString());
     } else {
-        LogPrintf("GUI: %s File: %s Line: %s Function: %s\n", msg.toStdString(),std::string(context.file),std::to_string(context.line),std::string(context.function));
+        LogPrintf("GUI: %s\n", msg.toStdString());
     }
 }
 

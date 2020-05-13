@@ -202,8 +202,6 @@ public:
     /// Create tutorial screen
     bool createTutorialScreen();
 
-    bool notify(QObject* receiver, QEvent* event);
-
     /// Request core initialization
     void requestInitialize();
     /// Request core shutdown
@@ -359,17 +357,6 @@ void BitcoinApplication::createPaymentServer()
 void BitcoinApplication::createOptionsModel()
 {
     optionsModel = new OptionsModel();
-}
-
-bool BitcoinApplication::notify(QObject* receiver, QEvent* event)
-{
-    bool done = true;
-    try {
-        done = QApplication::notify(receiver, event);
-    } catch (const std::exception& ex) {
-        LogPrint(BCLog::QT, "GUI: %s Exception: %s receiver: %s\n", ex.what(),receiver->objectName().toStdString());
-    }
-    return done;
 }
 
 void BitcoinApplication::createWindow(const NetworkStyle* networkStyle)

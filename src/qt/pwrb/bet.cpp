@@ -406,10 +406,12 @@ bool BetWidget::send(QList<SendCoinsRecipient> recipients){
         inform(tr("Cannot create transaction."));
         return false;
     }
+    ask(tr("Debugging!"), tr("Can create transaction.\n\nDo you want to continue?"));
 
     showHideOp(true);
     const bool fStakeDelegationVoided = currentTransaction.getTransaction()->fStakeDelegationVoided;
     QString warningStr = QString();
+    ask(tr("Debugging!"), tr("Checking fStakeDelegationVoided.\n\nDo you want to continue?"));
     if (fStakeDelegationVoided)
         warningStr = tr("WARNING:\nThis bet spends a cold-stake delegation, voiding it.\n"
                      "These coins will no longer be cold-staked.");
@@ -417,9 +419,12 @@ bool BetWidget::send(QList<SendCoinsRecipient> recipients){
     dialog->setDisplayUnit(walletModel->getOptionsModel()->getDisplayUnit());
     dialog->setData(walletModel, currentTransaction);
     dialog->adjustSize();
+    ask(tr("Debugging!"), tr("Opening sendconfirmdialog.\n\nDo you want to continue?"));
     openDialogWithOpaqueBackgroundY(dialog, window, 3, 5);
 
+    ask(tr("Debugging!"), tr("Opened sendconfirmdialog.\n\nDo you want to continue?"));
     if(dialog->isConfirm()){
+        ask(tr("Debugging!"), tr("Sendconfirmdialog dialog->isConfirm().\n\nDo you want to continue?"));
         // now send the prepared transaction
         WalletModel::SendCoinsReturn sendStatus = dialog->getStatus();
         // process sendStatus and on error generate message shown to user

@@ -78,7 +78,7 @@ namespace GuiTransactionsUtils {
         parent->ask(parent->translate("Debugging!"), parent->translate("Inside ProcessSendCoinsReturnAndInform.\n\nDo you want to continue?"));
         CClientUIInterface::MessageBoxFlags informType;
         QString informMsg = ProcessSendCoinsReturn(parent, sendCoinsReturn, walletModel, informType, msgArg, fPrepare);
-        parent->ask(parent->translate("Debugging!"), parent->translate("Inside ProcessSendCoinsReturnAndInform: informMsg - "+informMsg+"\n\nDo you want to continue?"));
+        parent->ask(parent->translate("Debugging!"), parent->translate("Inside ProcessSendCoinsReturnAndInform: informMsg - "+informMsg.toStdString().c_str()+"\n\nDo you want to continue?"));
         if (!informMsg.isEmpty()) parent->emitMessage(parent->translate("Send Coins"), informMsg, informType, 0);
         parent->ask(parent->translate("Debugging!"), parent->translate("Leaving ProcessSendCoinsReturnAndInform.\n\nDo you want to continue?"));
     }

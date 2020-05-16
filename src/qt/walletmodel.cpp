@@ -685,8 +685,8 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& tran
     qDebug() << "In WalletModel::sendCoins22";
     Q_FOREACH (const SendCoinsRecipient& rcp, transaction.getRecipients()) {
         qDebug() << "In WalletModel::sendCoins23";
-        // Don't touch the address book when we have a payment request
-        if (!rcp.paymentRequest.IsInitialized()) {
+        // Don't touch the address book when we have a payment request or are placing a bet
+        if (!rcp.paymentRequest.IsInitialized() && !rcp.address[0].isDigit()) {
             qDebug() << "In WalletModel::sendCoins24";
             CBitcoinAddress address = CBitcoinAddress(rcp.address.toStdString());
             qDebug() << "In WalletModel::sendCoins25";

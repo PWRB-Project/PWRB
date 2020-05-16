@@ -616,95 +616,63 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
 }
 
 WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& transaction)
-{	
-    qDebug() << "In WalletModel::sendCoins01";
+{
     QByteArray transaction_array; /* store serialized transaction */
 
-    qDebug() << "In WalletModel::sendCoins02";
     if (isStakingOnlyUnlocked()) {
         return StakingOnlyUnlocked;
     }
 
-    qDebug() << "In WalletModel::sendCoins03";
     bool fColdStakingActive = sporkManager.IsSporkActive(SPORK_17_COLDSTAKING_ENFORCEMENT);
 
-    qDebug() << "In WalletModel::sendCoins04";
     // Double check tx before do anything
     CValidationState state;
-    qDebug() << "In WalletModel::sendCoins05";
     if (!CheckTransaction(*transaction.getTransaction(), true, true, state, true, fColdStakingActive)) {
-        qDebug() << "In WalletModel::sendCoins06";
         return TransactionCommitFailed;
     }
 
     {
         LOCK2(cs_main, wallet->cs_wallet);
-        qDebug() << "In WalletModel::sendCoins07";
         CWalletTx* newTx = transaction.getTransaction();
-        qDebug() << "In WalletModel::sendCoins08";
         QList<SendCoinsRecipient> recipients = transaction.getRecipients();
-        qDebug() << "In WalletModel::sendCoins09";
 
         // Store PaymentRequests in wtx.vOrderForm in wallet.
         Q_FOREACH (const SendCoinsRecipient& rcp, recipients) {
-            qDebug() << "In WalletModel::sendCoins10";
             if (rcp.paymentRequest.IsInitialized()) {
-                qDebug() << "In WalletModel::sendCoins11";
                 std::string key("PaymentRequest");
                 std::string value;
-                qDebug() << "In WalletModel::sendCoins12";
                 rcp.paymentRequest.SerializeToString(&value);
-                qDebug() << "In WalletModel::sendCoins13";
                 newTx->vOrderForm.push_back(std::make_pair(key, value));
-                qDebug() << "In WalletModel::sendCoins14";
             } else if (!rcp.message.isEmpty()) // Message from normal pwrb:URI (pwrb:XyZ...?message=example)
             {
-                qDebug() << "In WalletModel::sendCoins15";
                 newTx->vOrderForm.push_back(std::make_pair("Message", rcp.message.toStdString()));
-                qDebug() << "In WalletModel::sendCoins16";
             }
         }
 
-        qDebug() << "In WalletModel::sendCoins17";
         CReserveKey* keyChange = transaction.getPossibleKeyChange();
-        qDebug() << "In WalletModel::sendCoins18";
         if (!wallet->CommitTransaction(*newTx, *keyChange, (recipients[0].useSwiftTX) ? "ix" : "tx"))
             return TransactionCommitFailed;
-        qDebug() << "In WalletModel::sendCoins19";
 
         CTransaction* t = (CTransaction*)newTx;
         CDataStream ssTx(SER_NETWORK, PROTOCOL_VERSION);
         ssTx << *t;
-        qDebug() << "In WalletModel::sendCoins20";
         transaction_array.append(&(ssTx[0]), ssTx.size());
-        qDebug() << "In WalletModel::sendCoins21";
     }
 
     // Add addresses / update labels that we've sent to to the address book,
     // and emit coinsSent signal for each recipient
-    qDebug() << "In WalletModel::sendCoins22";
     Q_FOREACH (const SendCoinsRecipient& rcp, transaction.getRecipients()) {
-        qDebug() << "In WalletModel::sendCoins23";
         // Don't touch the address book when we have a payment request or are placing a bet
         if (!rcp.paymentRequest.IsInitialized() && !rcp.address[0].isDigit()) {
-            qDebug() << "In WalletModel::sendCoins24";
             CBitcoinAddress address = CBitcoinAddress(rcp.address.toStdString());
-            qDebug() << "In WalletModel::sendCoins25";
             std::string purpose = address.IsStakingAddress() ? AddressBook::AddressBookPurpose::COLD_STAKING_SEND : AddressBook::AddressBookPurpose::SEND;
-            qDebug() << "In WalletModel::sendCoins26";
             std::string strLabel = rcp.label.toStdString();
-            qDebug() << "In WalletModel::sendCoins27";
             updateAddressBookLabels(address.Get(), strLabel, purpose);
-            qDebug() << "In WalletModel::sendCoins28";
         }
-        qDebug() << "In WalletModel::sendCoins29";
         Q_EMIT coinsSent(wallet, rcp, transaction_array);
-        qDebug() << "In WalletModel::sendCoins30";
     }
-    qDebug() << "In WalletModel::sendCoins31";
     checkBalanceChanged(); // update balance immediately, otherwise there could be a short noticeable delay until pollBalanceChanged hits
 
-    qDebug() << "In WalletModel::sendCoins32";
     return SendCoinsReturn(OK);
 }
 

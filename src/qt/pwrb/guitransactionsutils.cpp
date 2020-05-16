@@ -75,12 +75,9 @@ namespace GuiTransactionsUtils {
 
     void ProcessSendCoinsReturnAndInform(PWidget* parent, const WalletModel::SendCoinsReturn& sendCoinsReturn, WalletModel* walletModel, const QString& msgArg, bool fPrepare)
     {
-        parent->ask(parent->translate("Debugging!"), parent->translate("Inside ProcessSendCoinsReturnAndInform.\n\nDo you want to continue?"));
         CClientUIInterface::MessageBoxFlags informType;
         QString informMsg = ProcessSendCoinsReturn(parent, sendCoinsReturn, walletModel, informType, msgArg, fPrepare);
-        parent->ask(parent->translate("Debugging!"), parent->translate(informMsg.toStdString().c_str()));
         if (!informMsg.isEmpty()) parent->emitMessage(parent->translate("Send Coins"), informMsg, informType, 0);
-        parent->ask(parent->translate("Debugging!"), parent->translate("Leaving ProcessSendCoinsReturnAndInform.\n\nDo you want to continue?"));
     }
 
 }

@@ -375,7 +375,6 @@ void BetWidget::onSendClicked(){
         return;
     }
 
-    ask(tr("Debugging!"), tr("About to send bet transaction.\n\nDo you want to continue?"));
     if((sendPwrb) ? send(recipients) : sendZpwrb(recipients)) {
         // Just return on success
         return;
@@ -389,7 +388,6 @@ bool BetWidget::send(QList<SendCoinsRecipient> recipients){
 
     prepareStatus = walletModel->prepareTransaction(currentTransaction, CoinControlDialog::coinControl, fDelegationsChecked);
 
-    ask(tr("Debugging!"), tr("About to ProcessSendCoinsReturnAndInform.\n\nDo you want to continue?"));
     // process prepareStatus and on error generate message shown to user
     GuiTransactionsUtils::ProcessSendCoinsReturnAndInform(
             this,
@@ -399,18 +397,15 @@ bool BetWidget::send(QList<SendCoinsRecipient> recipients){
                                          currentTransaction.getTransactionFee()),
             true
     );
-    ask(tr("Debugging!"), tr("Left ProcessSendCoinsReturnAndInform.\n\nDo you want to continue?"));
 
     if (prepareStatus.status != WalletModel::OK) {
         inform(tr("Cannot create transaction."));
         return false;
     }
-    ask(tr("Debugging!"), tr("Can create transaction.\n\nDo you want to continue?"));
 
     showHideOp(true);
     const bool fStakeDelegationVoided = currentTransaction.getTransaction()->fStakeDelegationVoided;
     QString warningStr = QString();
-    ask(tr("Debugging!"), tr("Checking fStakeDelegationVoided.\n\nDo you want to continue?"));
     if (fStakeDelegationVoided)
         warningStr = tr("WARNING:\nThis bet spends a cold-stake delegation, voiding it.\n"
                      "These coins will no longer be cold-staked.");
@@ -418,34 +413,28 @@ bool BetWidget::send(QList<SendCoinsRecipient> recipients){
     dialog->setDisplayUnit(walletModel->getOptionsModel()->getDisplayUnit());
     dialog->setData(walletModel, currentTransaction);
     dialog->adjustSize();
-    ask(tr("Debugging!"), tr("Opening sendconfirmdialog.\n\nDo you want to continue?"));
     openDialogWithOpaqueBackgroundY(dialog, window, 3, 5);
 
-    ask(tr("Debugging!"), tr("Opened sendconfirmdialog.\n\nDo you want to continue?"));
     if(dialog->isConfirm()){
-        ask(tr("Debugging!"), tr("Sendconfirmdialog dialog->isConfirm().\n\nDo you want to continue?"));
         // now send the prepared transaction
         WalletModel::SendCoinsReturn sendStatus = dialog->getStatus();
         // process sendStatus and on error generate message shown to user
-        ask(tr("Debugging!"), tr("Executing ProcessSendCoinsReturnAndInform.\n\nDo you want to continue?"));
         GuiTransactionsUtils::ProcessSendCoinsReturnAndInform(
                 this,
                 sendStatus,
                 walletModel
         );
-        ask(tr("Debugging!"), tr("Verifying the walletmodel is OK.\n\nDo you want to continue?"));
         if (sendStatus.status == WalletModel::OK) {
-            inform(tr("Bet Placed"));
             // if delegations were spent, update cachedBalance
             if (fStakeDelegationVoided)
                 cachedDelegatedBalance = walletModel->getDelegatedBalance();
             clearAll(false);
+            inform(tr("Bet Placed"));
             dialog->deleteLater();
             return true;
         }
     }
 
-    ask(tr("Debugging!"), tr("We shouldn't have made it here.\n\nDo you want to continue?"));
     dialog->deleteLater();
     return false;
 }

@@ -377,9 +377,8 @@ void BetWidget::onSendClicked(){
 
     ask(tr("Debugging!"), tr("About to send bet transaction.\n\nDo you want to continue?"));
     if((sendPwrb) ? send(recipients) : sendZpwrb(recipients)) {
-        ask(tr("Debugging!"), tr("About to updateEntryLabels.\n\nDo you want to continue?"));
-        updateEntryLabels(recipients);
-        ask(tr("Debugging!"), tr("Finished updateEntryLabels.\n\nDo you want to continue?"));
+        // Just return on success
+        return;
     }
 }
 

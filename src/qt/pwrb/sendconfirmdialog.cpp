@@ -180,15 +180,11 @@ void TxDetailDialog::setData(WalletModel *model, WalletModelTransaction &tx)
 
 void TxDetailDialog::acceptTx()
 {
-    parent->ask(tr("Debugging!"), tr("Entered TxDetailDialog::acceptTx.\n\nDo you want to continue?"));
     if (!isConfirmDialog)
         throw GUIException(strprintf("%s called on non confirm dialog", __func__));
     this->confirm = true;
-    parent->ask(tr("Debugging!"), tr("Calling model->sendCoins.\n\nDo you want to continue?"));
     this->sendStatus = model->sendCoins(*this->tx);
-    parent->ask(tr("Debugging!"), tr("Calling accept().\n\nDo you want to continue?"));
     accept();
-    parent->ask(tr("Debugging!"), tr("Left accept().\n\nDo you want to continue?"));
 }
 
 void TxDetailDialog::onInputsClicked()

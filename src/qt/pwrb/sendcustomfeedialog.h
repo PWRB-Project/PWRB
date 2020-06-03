@@ -7,8 +7,8 @@
 #ifndef SENDCUSTOMFEEDIALOG_H
 #define SENDCUSTOMFEEDIALOG_H
 
-#include <QDialog>
 #include "amount.h"
+#include "qt/pwrb/focuseddialog.h"
 #include "qt/pwrb/snackbar.h"
 
 class PWRBGUI;
@@ -18,7 +18,7 @@ namespace Ui {
 class SendCustomFeeDialog;
 }
 
-class SendCustomFeeDialog : public QDialog
+class SendCustomFeeDialog : public FocusedDialog
 {
     Q_OBJECT
 

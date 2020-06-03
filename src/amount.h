@@ -14,6 +14,8 @@
 #include <stdlib.h>
 #include <string>
 
+extern const std::string CURRENCY_UNIT;
+
 /** Amount in PWRB (Can be negative) */
 typedef int64_t CAmount;
 
@@ -46,7 +48,7 @@ public:
     ADD_SERIALIZE_METHODS;
 
     template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion)
+    inline void SerializationOp(Stream& s, Operation ser_action)
     {
         READWRITE(nSatoshisPerK);
     }

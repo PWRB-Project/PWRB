@@ -4,6 +4,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "bet.h"
+#include "core_io.h"
 #include <ctime>
 
 #include "wallet/wallet.h"
@@ -619,7 +620,7 @@ std::vector<CBetOut> GetBetPayouts(int height)
                 for (unsigned int i = 0; i < tx.vout.size(); i++) {
 
                     const CTxOut &txout = tx.vout[i];
-                    std::string scriptPubKey = txout.scriptPubKey.ToString();
+                    std::string scriptPubKey = ScriptToAsmStr(txout.scriptPubKey);
                     CAmount betAmount = txout.nValue;
 
                     if (scriptPubKey.length() > 0 && strncmp(scriptPubKey.c_str(), "OP_RETURN", 9) == 0) {

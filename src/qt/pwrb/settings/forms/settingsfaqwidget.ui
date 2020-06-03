@@ -58,7 +58,7 @@
         <item>
          <widget class="QLabel" name="labelTitle">
           <property name="text">
-           <string>TextLabel</string>
+           <string>Frequently Asked Questions</string>
           </property>
          </widget>
         </item>
@@ -78,7 +78,7 @@
         <item>
          <widget class="QPushButton" name="pushButtonExit">
           <property name="text">
-           <string>PushButton</string>
+           <string>Exit</string>
           </property>
          </widget>
         </item>
@@ -416,7 +416,7 @@
                <item>
                 <widget class="QLabel" name="labelWebLink">
                  <property name="text">
-                  <string>TextLabel</string>
+                  <string>You can read more here</string>
                  </property>
                 </widget>
                </item>
@@ -442,7 +442,7 @@
                   <enum>Qt::NoFocus</enum>
                  </property>
                  <property name="text">
-                  <string>PushButton</string>
+                  <string>https://powerbalt.com/</string>
                  </property>
                 </widget>
                </item>
@@ -632,7 +632,7 @@
                            allowing all owners of PWRB to participate in earning block rewards
                            while securing the network with full node wallets.
                            &lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;
-                           PWR has enabled complete on-chain betting on the results of the US
+                           PWRB has enabled complete on-chain betting on the results of the US
                            PowerBall draws held every Wednesday and Saturday.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </string>
@@ -1362,10 +1362,10 @@
                          <string>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;
                            We have support channels in most of our official chat groups, for example
-                           &lt;a style='color: #8080ff' href='https://discord.poweralt.io'&gt;
+                           &lt;a style='color: #ff6666' href='https://discord.powerbalt.com'&gt;
                            #support in our Discord&lt;/a&gt;.
                            If you prefer to submit a ticket, One can be
-                           &lt;a style='color: #8080ff' href='https://PWRB.freshdesk.com'&gt;
+                           &lt;a style='color: #ff6666' href='https://PWRB.freshdesk.com'&gt;
                            our Freshdesk support site&lt;/a&gt;.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </string>

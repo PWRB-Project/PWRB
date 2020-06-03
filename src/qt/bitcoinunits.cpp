@@ -57,27 +57,28 @@ QString BitcoinUnits::id(int unit)
 
 QString BitcoinUnits::name(int unit, bool isZpwrb)
 {
+    const QString CURR_UNIT = QString(CURRENCY_UNIT.c_str());
     QString z = "";
     if(isZpwrb) z = "z";
     if (Params().NetworkID() == CBaseChainParams::MAIN) {
         switch (unit) {
         case PWRB:
-            return z + QString("PWRB");
+            return z + CURR_UNIT;
         case mPWRB:
-            return z + QString("mPWRB");
+            return z + QString("m") + CURR_UNIT;
         case uPWRB:
-            return z + QString::fromUtf8("μPWRB");
+            return z + QString::fromUtf8("μ") + CURR_UNIT;
         default:
             return QString("???");
         }
     } else {
         switch (unit) {
         case PWRB:
-            return z + QString("tPWRB");
+            return z + QString("t") + CURR_UNIT;
         case mPWRB:
-            return z + QString("mtPWRB");
+            return z + QString("mt") + CURR_UNIT;
         case uPWRB:
-            return z + QString::fromUtf8("μtPWRB");
+            return z + QString::fromUtf8("μt") + CURR_UNIT;
         default:
             return QString("???");
         }
@@ -86,25 +87,26 @@ QString BitcoinUnits::name(int unit, bool isZpwrb)
 
 QString BitcoinUnits::description(int unit)
 {
+    const QString CURR_UNIT = QString(CURRENCY_UNIT.c_str());
     if (Params().NetworkID() == CBaseChainParams::MAIN) {
         switch (unit) {
         case PWRB:
-            return QString("PWRB");
+            return CURR_UNIT;
         case mPWRB:
-            return QString("Milli-PWRB (1 / 1" THIN_SP_UTF8 "000)");
+            return QString("Milli-") + CURR_UNIT + QString(" (1 / 1" THIN_SP_UTF8 "000)");
         case uPWRB:
-            return QString("Micro-PWRB (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            return QString("Micro-") + CURR_UNIT + QString(" (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
         default:
             return QString("???");
         }
     } else {
         switch (unit) {
         case PWRB:
-            return QString("TestPWRBs");
+            return QString("Test") + CURR_UNIT;
         case mPWRB:
-            return QString("Milli-TestPWRB (1 / 1" THIN_SP_UTF8 "000)");
+            return QString("Milli-Test") + CURR_UNIT + QString(" (1 / 1" THIN_SP_UTF8 "000)");
         case uPWRB:
-            return QString("Micro-TestPWRB (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            return QString("Micro-Test") + CURR_UNIT + QString(" (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
         default:
             return QString("???");
         }

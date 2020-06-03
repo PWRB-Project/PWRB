@@ -21,7 +21,7 @@
 #include <QRegularExpressionValidator>
 
 MasterNodeWizardDialog::MasterNodeWizardDialog(WalletModel *model, QWidget *parent) :
-    QDialog(parent),
+    FocusedDialog(parent),
     ui(new Ui::MasterNodeWizardDialog),
     icConfirm1(new QPushButton()),
     icConfirm3(new QPushButton()),
@@ -55,7 +55,6 @@ MasterNodeWizardDialog::MasterNodeWizardDialog(WalletModel *model, QWidget *pare
     setCssProperty(ui->labelTitle3, "text-title-dialog");
     setCssProperty(ui->labelMessage3, "text-main-grey");
 
-    ui->lineEditName->setPlaceholderText(tr("e.g user_masternode"));
     initCssEditLine(ui->lineEditName);
     // MN alias must not contain spaces or "#" character
     QRegularExpression rx("^(?:(?![\\#\\s]).)*");
@@ -66,8 +65,6 @@ MasterNodeWizardDialog::MasterNodeWizardDialog(WalletModel *model, QWidget *pare
     setCssProperty({ui->labelSubtitleIp, ui->labelSubtitlePort}, "text-title");
     setCssSubtitleScreen(ui->labelSubtitleAddressIp);
 
-    ui->lineEditIpAddress->setPlaceholderText("e.g 18.255.255.255");
-    ui->lineEditPort->setPlaceholderText("e.g 12300");
     initCssEditLine(ui->lineEditIpAddress);
     initCssEditLine(ui->lineEditPort);
     ui->stackedWidget->setCurrentIndex(pos);
@@ -89,14 +86,12 @@ MasterNodeWizardDialog::MasterNodeWizardDialog(WalletModel *model, QWidget *pare
 
     // Connect btns
     setCssBtnPrimary(ui->btnNext);
-    ui->btnNext->setText(tr("NEXT"));
     setCssProperty(ui->btnBack , "btn-dialog-cancel");
     ui->btnBack->setVisible(false);
-    ui->btnBack->setText(tr("BACK"));
     setCssProperty(ui->pushButtonSkip, "ic-close");
 
     connect(ui->pushButtonSkip, &QPushButton::clicked, this, &MasterNodeWizardDialog::close);
-    connect(ui->btnNext, &QPushButton::clicked, this, &MasterNodeWizardDialog::onNextClicked);
+    connect(ui->btnNext, &QPushButton::clicked, this, &MasterNodeWizardDialog::accept);
     connect(ui->btnBack, &QPushButton::clicked, this, &MasterNodeWizardDialog::onBackClicked);
 }
 
@@ -105,7 +100,7 @@ void MasterNodeWizardDialog::showEvent(QShowEvent *event)
     if (ui->btnNext) ui->btnNext->setFocus();
 }
 
-void MasterNodeWizardDialog::onNextClicked()
+void MasterNodeWizardDialog::accept()
 {
     switch(pos) {
         case 0:{
@@ -149,7 +144,7 @@ void MasterNodeWizardDialog::onNextClicked()
             ui->btnBack->setVisible(true);
             ui->btnBack->setVisible(true);
             isOk = createMN();
-            accept();
+            QDialog::accept();
         }
     }
     pos++;
@@ -197,8 +192,8 @@ bool MasterNodeWizardDialog::createMN()
         std::string port = portStr.toStdString();
 
         // New receive address
-        CBitcoinAddress address;
-        PairResult r = walletModel->getNewAddress(address, alias);
+        Destination dest;
+        PairResult r = walletModel->getNewAddress(dest, alias);
 
         if (!r.result) {
             // generate address fail
@@ -207,7 +202,11 @@ bool MasterNodeWizardDialog::createMN()
         }
 
         // const QString& addr, const QString& label, const CAmount& amount, const QString& message
-        SendCoinsRecipient sendCoinsRecipient(QString::fromStdString(address.ToString()), QString::fromStdString(alias), CAmount(10) * COIN, "");
+        SendCoinsRecipient sendCoinsRecipient(
+                QString::fromStdString(dest.ToString()),
+                QString::fromStdString(alias),
+                CAmount(10) * COIN,
+                "");
 
         // Send the 10 tx to one of your address
         QList<SendCoinsRecipient> recipients;
@@ -218,7 +217,7 @@ bool MasterNodeWizardDialog::createMN()
         // no coincontrol, no P2CS delegations
         prepareStatus = walletModel->prepareTransaction(currentTransaction, nullptr, false);
 
-        QString returnMsg = "Unknown error";
+        QString returnMsg = tr("Unknown error");
         // process prepareStatus and on error generate message shown to user
         CClientUIInterface::MessageBoxFlags informType;
         returnMsg = GuiTransactionsUtils::ProcessSendCoinsReturn(
@@ -347,7 +346,7 @@ bool MasterNodeWizardDialog::createMN()
 
                 returnStr = tr("Master node created! Wait %1 confirmations before starting it.").arg(MASTERNODE_MIN_CONFIRMATIONS);
                 return true;
-            } else{
+            } else {
                 returnStr = tr("masternode.conf file doesn't exists");
             }
         } else {

@@ -1,5 +1,5 @@
 ---
-name: "pwrb-linux-1.0.3"
+name: "pwrb-linux-1.0.4"
 enable_cache: true
 distro: "ubuntu"
 suites:

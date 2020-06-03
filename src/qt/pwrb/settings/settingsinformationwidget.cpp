@@ -155,7 +155,7 @@ void SettingsInformationWidget::setMasternodeCount(const QString& strMasternodes
 
 void SettingsInformationWidget::openNetworkMonitor()
 {
-    if(!rpcConsole){
+    if (!rpcConsole) {
         rpcConsole = new RPCConsole(0);
         rpcConsole->setClientModel(clientModel);
     }

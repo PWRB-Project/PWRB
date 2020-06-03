@@ -15,10 +15,9 @@
 #include "qt/pwrb/qtutils.h"
 #include <QList>
 #include <QDateTime>
-#include <QKeyEvent>
 
 TxDetailDialog::TxDetailDialog(QWidget *parent, bool _isConfirmDialog, const QString& warningStr) :
-    QDialog(parent),
+    FocusedDialog(parent),
     ui(new Ui::TxDetailDialog),
     isConfirmDialog(_isConfirmDialog)
 {
@@ -70,23 +69,19 @@ TxDetailDialog::TxDetailDialog(QWidget *parent, bool _isConfirmDialog, const QSt
         ui->contentSize->setVisible(false);
 
         connect(ui->btnCancel, &QPushButton::clicked, this, &TxDetailDialog::close);
-        connect(ui->btnSave, &QPushButton::clicked, [this](){acceptTx();});
-    }else{
+        connect(ui->btnSave, &QPushButton::clicked, [this](){accept();});
+    } else {
         ui->labelTitle->setText(tr("Transaction Details"));
         ui->containerButtons->setVisible(false);
     }
 
-    connect(ui->btnEsc, &QPushButton::clicked, this, &TxDetailDialog::closeDialog);
+    connect(ui->btnEsc, &QPushButton::clicked, this, &TxDetailDialog::close);
     connect(ui->pushInputs, &QPushButton::clicked, this, &TxDetailDialog::onInputsClicked);
     connect(ui->pushOutputs, &QPushButton::clicked, this, &TxDetailDialog::onOutputsClicked);
 }
 
-void TxDetailDialog::showEvent(QShowEvent *event)
+void TxDetailDialog::setData(WalletModel *model, const QModelIndex &index)
 {
-    setFocus();
-}
-
-void TxDetailDialog::setData(WalletModel *model, const QModelIndex &index){
     this->model = model;
     TransactionRecord *rec = static_cast<TransactionRecord*>(index.internalPointer());
     QDateTime date = index.data(TransactionTableModel::DateRole).toDateTime();
@@ -96,7 +91,7 @@ void TxDetailDialog::setData(WalletModel *model, const QModelIndex &index){
     ui->textAmount->setText(amountText);
 
     const CWalletTx* tx = model->getTx(rec->hash);
-    if(tx) {
+    if (tx) {
         this->txHash = rec->hash;
         QString hash = QString::fromStdString(tx->GetHash().GetHex());
         ui->textId->setText(hash.left(20) + "..." + hash.right(20));
@@ -178,13 +173,13 @@ void TxDetailDialog::setData(WalletModel *model, WalletModelTransaction &tx)
     ui->textFee->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, txFee, false, BitcoinUnits::separatorAlways));
 }
 
-void TxDetailDialog::acceptTx()
+void TxDetailDialog::accept()
 {
-    if (!isConfirmDialog)
-        throw GUIException(strprintf("%s called on non confirm dialog", __func__));
-    this->confirm = true;
-    this->sendStatus = model->sendCoins(*this->tx);
-    accept();
+    if (isConfirmDialog) {
+        this->confirm = true;
+        this->sendStatus = model->sendCoins(*this->tx);
+    }
+    QDialog::accept();
 }
 
 void TxDetailDialog::onInputsClicked()
@@ -196,7 +191,7 @@ void TxDetailDialog::onInputsClicked()
         if (!inputsLoaded) {
             inputsLoaded = true;
             const CWalletTx* tx = (this->tx) ? this->tx->getTransaction() : model->getTx(this->txHash);
-            if(tx) {
+            if (tx) {
                 ui->gridInputs->setMinimumHeight(50 + (50 * tx->vin.size()));
                 int i = 1;
                 for (const CTxIn &in : tx->vin) {
@@ -254,29 +249,14 @@ void TxDetailDialog::onOutputsClicked()
     }
 }
 
-void TxDetailDialog::keyPressEvent(QKeyEvent *event)
+void TxDetailDialog::reject()
 {
-    if (event->type() == QEvent::KeyPress) {
-        QKeyEvent* ke = static_cast<QKeyEvent*>(event);
-        // Detect Enter key press
-        if (ke->key() == Qt::Key_Enter || ke->key() == Qt::Key_Return) {
-            if (isConfirmDialog) acceptTx();
-            else accept();
-        }
-        // Detect Esc key press
-        if (ke->key() == Qt::Key_Escape)
-            closeDialog();
-    }
-}
-
-void TxDetailDialog::closeDialog()
-{
-    if(snackBar && snackBar->isVisible()) snackBar->hide();
-    close();
+    if (snackBar && snackBar->isVisible()) snackBar->hide();
+    QDialog::reject();
 }
 
 TxDetailDialog::~TxDetailDialog()
 {
-    if(snackBar) delete snackBar;
+    if (snackBar) delete snackBar;
     delete ui;
 }

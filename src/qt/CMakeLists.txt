@@ -119,6 +119,7 @@ SET(QT_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/pwrb/pwrbgui.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/pwrb/loadingdialog.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/pwrb/pwidget.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/pwrb/focuseddialog.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/pwrb/guitransactionsutils.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/pwrb/snackbar.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/pwrb/navmenuwidget.cpp

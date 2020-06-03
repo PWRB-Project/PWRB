@@ -7,7 +7,7 @@
 #ifndef RECEIVEDIALOG_H
 #define RECEIVEDIALOG_H
 
-#include <QDialog>
+#include "qt/pwrb/focuseddialog.h"
 #include <QPixmap>
 
 class SendCoinsRecipient;
@@ -16,7 +16,7 @@ namespace Ui {
 class ReceiveDialog;
 }
 
-class ReceiveDialog : public QDialog
+class ReceiveDialog : public FocusedDialog
 {
     Q_OBJECT
 

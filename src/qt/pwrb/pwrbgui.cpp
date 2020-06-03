@@ -80,8 +80,7 @@ PWRBGUI::PWRBGUI(const NetworkStyle* networkStyle, QWidget* parent) :
 
 #ifdef ENABLE_WALLET
     // Create wallet frame
-    if(enableWallet){
-
+    if (enableWallet) {
         QFrame* centralWidget = new QFrame(this);
         this->setMinimumWidth(BASE_WINDOW_MIN_WIDTH);
         this->setMinimumHeight(BASE_WINDOW_MIN_HEIGHT);
@@ -169,7 +168,8 @@ PWRBGUI::PWRBGUI(const NetworkStyle* networkStyle, QWidget* parent) :
 
 }
 
-void PWRBGUI::createActions(const NetworkStyle* networkStyle){
+void PWRBGUI::createActions(const NetworkStyle* networkStyle)
+{
     toggleHideAction = new QAction(networkStyle->getAppIcon(), tr("&Show / Hide"), this);
     toggleHideAction->setStatusTip(tr("Show or hide the main Window"));
 
@@ -185,7 +185,8 @@ void PWRBGUI::createActions(const NetworkStyle* networkStyle){
 /**
  * Here add every event connection
  */
-void PWRBGUI::connectActions() {
+void PWRBGUI::connectActions()
+{
     QShortcut *consoleShort = new QShortcut(this);
     consoleShort->setKey(QKeySequence(SHORT_KEY + Qt::Key_C));
     connect(consoleShort, &QShortcut::activated, [this](){
@@ -207,7 +208,8 @@ void PWRBGUI::connectActions() {
 }
 
 
-void PWRBGUI::createTrayIcon(const NetworkStyle* networkStyle) {
+void PWRBGUI::createTrayIcon(const NetworkStyle* networkStyle)
+{
 #ifndef Q_OS_MAC
     trayIcon = new QSystemTrayIcon(this);
     QString toolTip = tr("PWRB Core client") + " " + networkStyle->getTitleAddText();
@@ -218,8 +220,8 @@ void PWRBGUI::createTrayIcon(const NetworkStyle* networkStyle) {
     notificator = new Notificator(QApplication::applicationName(), trayIcon, this);
 }
 
-//
-PWRBGUI::~PWRBGUI() {
+PWRBGUI::~PWRBGUI()
+{
     // Unsubscribe from notifications from core
     unsubscribeFromCoreSignals();
 
@@ -233,16 +235,17 @@ PWRBGUI::~PWRBGUI() {
 
 
 /** Get restart command-line parameters and request restart */
-void PWRBGUI::handleRestart(QStringList args){
+void PWRBGUI::handleRestart(QStringList args)
+{
     if (!ShutdownRequested())
         Q_EMIT requestedRestart(args);
 }
 
 
-void PWRBGUI::setClientModel(ClientModel* clientModel) {
+void PWRBGUI::setClientModel(ClientModel* clientModel)
+{
     this->clientModel = clientModel;
-    if(this->clientModel) {
-
+    if (this->clientModel) {
         // Create system tray menu (or setup the dock menu) that late to prevent users from calling actions,
         // while the client has not yet fully loaded
         createTrayIconMenu();
@@ -278,7 +281,8 @@ void PWRBGUI::setClientModel(ClientModel* clientModel) {
     }
 }
 
-void PWRBGUI::createTrayIconMenu() {
+void PWRBGUI::createTrayIconMenu()
+{
 #ifndef Q_OS_MAC
     // return if trayIcon is unset (only on non-macOSes)
     if (!trayIcon)
@@ -352,15 +356,17 @@ void PWRBGUI::closeEvent(QCloseEvent* event)
 }
 
 
-void PWRBGUI::messageInfo(const QString& text){
-    if(!this->snackBar) this->snackBar = new SnackBar(this, this);
+void PWRBGUI::messageInfo(const QString& text)
+{
+    if (!this->snackBar) this->snackBar = new SnackBar(this, this);
     this->snackBar->setText(text);
     this->snackBar->resize(this->width(), snackBar->height());
     openDialog(this->snackBar, this);
 }
 
 
-void PWRBGUI::message(const QString& title, const QString& message, unsigned int style, bool* ret) {
+void PWRBGUI::message(const QString& title, const QString& message, unsigned int style, bool* ret)
+{
     QString strTitle =  tr("PWRB Core"); // default title
     // Default to information icon
     int nNotifyIcon = Notificator::Information;
@@ -399,18 +405,18 @@ void PWRBGUI::message(const QString& title, const QString& message, unsigned int
         // Check for buttons, use OK as default, if none was supplied
         int r = 0;
         showNormalIfMinimized();
-        if(style & CClientUIInterface::BTN_MASK){
+        if (style & CClientUIInterface::BTN_MASK) {
             r = openStandardDialog(
                     (title.isEmpty() ? strTitle : title), message, "OK", "CANCEL"
                 );
-        }else{
+        } else {
             r = openStandardDialog((title.isEmpty() ? strTitle : title), message, "OK");
         }
         if (ret != NULL)
             *ret = r;
-    } else if(style & CClientUIInterface::MSG_INFORMATION_SNACK){
+    } else if (style & CClientUIInterface::MSG_INFORMATION_SNACK) {
         messageInfo(message);
-    }else {
+    } else {
         // Append title to "PWRB - "
         if (!msgType.isEmpty())
             strTitle += " - " + msgType;
@@ -418,7 +424,8 @@ void PWRBGUI::message(const QString& title, const QString& message, unsigned int
     }
 }
 
-bool PWRBGUI::openStandardDialog(QString title, QString body, QString okBtn, QString cancelBtn){
+bool PWRBGUI::openStandardDialog(QString title, QString body, QString okBtn, QString cancelBtn)
+{
     DefaultDialog *dialog;
     if (isVisible()) {
         showHide(true);
@@ -440,7 +447,8 @@ bool PWRBGUI::openStandardDialog(QString title, QString body, QString okBtn, QSt
 }
 
 
-void PWRBGUI::showNormalIfMinimized(bool fToggleHidden) {
+void PWRBGUI::showNormalIfMinimized(bool fToggleHidden)
+{
     if (!clientModel)
         return;
     if (!isHidden() && !isMinimized() && !GUIUtil::isObscured(this) && fToggleHidden) {
@@ -450,11 +458,13 @@ void PWRBGUI::showNormalIfMinimized(bool fToggleHidden) {
     }
 }
 
-void PWRBGUI::toggleHidden() {
+void PWRBGUI::toggleHidden()
+{
     showNormalIfMinimized(true);
 }
 
-void PWRBGUI::detectShutdown() {
+void PWRBGUI::detectShutdown()
+{
     if (ShutdownRequested()) {
         if (rpcConsole)
             rpcConsole->hide();
@@ -462,26 +472,31 @@ void PWRBGUI::detectShutdown() {
     }
 }
 
-void PWRBGUI::goToDashboard(){
-    if(stackedContainer->currentWidget() != dashboard){
+void PWRBGUI::goToDashboard()
+{
+    if (stackedContainer->currentWidget() != dashboard) {
         stackedContainer->setCurrentWidget(dashboard);
         topBar->showBottom();
     }
 }
 
-void PWRBGUI::goToSend(){
+void PWRBGUI::goToSend()
+{
     showTop(sendWidget);
 }
 
-void PWRBGUI::goToAddresses(){
+void PWRBGUI::goToAddresses()
+{
     showTop(addressesWidget);
 }
 
-void PWRBGUI::goToBet(){
+void PWRBGUI::goToBet()
+{
     showTop(betWidget);
 }
 
-void PWRBGUI::goToColdStaking(){
+void PWRBGUI::goToColdStaking()
+{
     showTop(coldStakingWidget);
 }
 
@@ -489,18 +504,21 @@ void PWRBGUI::goToSettings(){
     showTop(settingsWidget);
 }
 
-void PWRBGUI::goToReceive(){
+void PWRBGUI::goToReceive()
+{
     showTop(receiveWidget);
 }
 
-void PWRBGUI::showTop(QWidget* view){
-    if(stackedContainer->currentWidget() != view){
+void PWRBGUI::showTop(QWidget* view)
+{
+    if (stackedContainer->currentWidget() != view) {
         stackedContainer->setCurrentWidget(view);
         topBar->showTop();
     }
 }
 
-void PWRBGUI::changeTheme(bool isLightTheme){
+void PWRBGUI::changeTheme(bool isLightTheme)
+{
 
     QString css = GUIUtil::loadStyleSheet();
     this->setStyleSheet(css);
@@ -512,7 +530,8 @@ void PWRBGUI::changeTheme(bool isLightTheme){
     updateStyle(this);
 }
 
-void PWRBGUI::resizeEvent(QResizeEvent* event){
+void PWRBGUI::resizeEvent(QResizeEvent* event)
+{
     // Parent..
     QMainWindow::resizeEvent(event);
     // background
@@ -521,19 +540,21 @@ void PWRBGUI::resizeEvent(QResizeEvent* event){
     Q_EMIT windowResizeEvent(event);
 }
 
-bool PWRBGUI::execDialog(QDialog *dialog, int xDiv, int yDiv){
+bool PWRBGUI::execDialog(QDialog *dialog, int xDiv, int yDiv)
+{
     return openDialogWithOpaqueBackgroundY(dialog, this);
 }
 
-void PWRBGUI::showHide(bool show){
-    if(!op) op = new QLabel(this);
-    if(!show){
+void PWRBGUI::showHide(bool show)
+{
+    if (!op) op = new QLabel(this);
+    if (!show) {
         op->setVisible(false);
         opEnabled = false;
-    }else{
+    } else {
         QColor bg("#000000");
         bg.setAlpha(200);
-        if(!isLightTheme()){
+        if (!isLightTheme()) {
             bg = QColor("#00000000");
             bg.setAlpha(150);
         }
@@ -552,11 +573,13 @@ void PWRBGUI::showHide(bool show){
     }
 }
 
-int PWRBGUI::getNavWidth(){
+int PWRBGUI::getNavWidth()
+{
     return this->navMenu->width();
 }
 
-void PWRBGUI::openFAQ(int section){
+void PWRBGUI::openFAQ(int section)
+{
     showHide(true);
     SettingsFaqWidget* dialog = new SettingsFaqWidget(this);
     if (section > 0) dialog->setSection(section);
@@ -569,7 +592,7 @@ void PWRBGUI::openFAQ(int section){
 bool PWRBGUI::addWallet(const QString& name, WalletModel* walletModel)
 {
     // Single wallet supported for now..
-    if(!stackedContainer || !clientModel || !walletModel)
+    if (!stackedContainer || !clientModel || !walletModel)
         return false;
 
     // set the model for every view
@@ -584,6 +607,7 @@ bool PWRBGUI::addWallet(const QString& name, WalletModel* walletModel)
     settingsWidget->setWalletModel(walletModel);
 
     // Connect actions..
+    connect(walletModel, &WalletModel::message, this, &PWRBGUI::message);
     connect(coldStakingWidget, &ColdStakingWidget::message, this, &PWRBGUI::message);
     connect(topBar, &TopBar::message, this, &PWRBGUI::message);
     connect(betWidget, &BetWidget::message, this, &PWRBGUI::message);
@@ -598,18 +622,21 @@ bool PWRBGUI::addWallet(const QString& name, WalletModel* walletModel)
     return true;
 }
 
-bool PWRBGUI::setCurrentWallet(const QString& name) {
+bool PWRBGUI::setCurrentWallet(const QString& name)
+{
     // Single wallet supported.
     return true;
 }
 
-void PWRBGUI::removeAllWallets() {
+void PWRBGUI::removeAllWallets()
+{
     // Single wallet supported.
 }
 
-void PWRBGUI::incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address) {
+void PWRBGUI::incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address)
+{
     // Only send notifications when not disabled
-    if(!bdisableSystemnotifications){
+    if (!bdisableSystemnotifications) {
         // On new transaction, make an info balloon
         message((amount) < 0 ? (pwalletMain->fMultiSendNotify == true ? tr("Sent MultiSend transaction") : tr("Sent transaction")) : tr("Incoming transaction"),
             tr("Date: %1\n"

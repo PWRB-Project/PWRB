@@ -459,13 +459,13 @@ QString TransactionTableModel::formatTxType(const TransactionRecord* wtx) const
     case TransactionRecord::BetWin:
         return tr("Bet Winnings");
     case TransactionRecord::StakeMint:
-        return tr("PWRB Stake");
+        return tr("%1 Stake").arg(CURRENCY_UNIT.c_str());
     case TransactionRecord::StakeZPWRB:
-        return tr("zPWRB Stake");
+        return tr("z%1 Stake").arg(CURRENCY_UNIT.c_str());
     case TransactionRecord::StakeDelegated:
-        return tr("PWRB Cold Stake");
+        return tr("%1 Cold Stake").arg(CURRENCY_UNIT.c_str());
     case TransactionRecord::StakeHot:
-        return tr("PWRB Stake on behalf of");
+        return tr("%1 Stake on behalf of").arg(CURRENCY_UNIT.c_str());
     case TransactionRecord::P2CSDelegationSent:
     case TransactionRecord::P2CSDelegationSentOwner:
     case TransactionRecord::P2CSDelegation:
@@ -476,15 +476,15 @@ QString TransactionTableModel::formatTxType(const TransactionRecord* wtx) const
     case TransactionRecord::Generated:
         return tr("Mined");
     case TransactionRecord::ZerocoinMint:
-        return tr("Converted PWRB to zPWRB");
+        return tr("Converted %1 to z%1").arg(CURRENCY_UNIT.c_str());
     case TransactionRecord::ZerocoinSpend:
-        return tr("Spent zPWRB");
+        return tr("Spent z%1").arg(CURRENCY_UNIT.c_str());
     case TransactionRecord::RecvFromZerocoinSpend:
-        return tr("Received PWRB from zPWRB");
+        return tr("Received %1 from z%1").arg(CURRENCY_UNIT.c_str());
     case TransactionRecord::ZerocoinSpend_Change_zPwrb:
-        return tr("Minted Change as zPWRB from zPWRB Spend");
+        return tr("Minted Change as z%1 from z%1 Spend").arg(CURRENCY_UNIT.c_str());
     case TransactionRecord::ZerocoinSpend_FromMe:
-        return tr("Converted zPWRB to PWRB");
+        return tr("Converted z%1 to %1").arg(CURRENCY_UNIT.c_str());
     default:
         return QString();
     }

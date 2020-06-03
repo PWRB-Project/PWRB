@@ -167,7 +167,8 @@ background-color:transparent;
              </size>
             </property>
             <property name="text">
-             <string/>
+             <string>HOME
+</string>
             </property>
             <property name="iconSize">
              <size>
@@ -195,7 +196,8 @@ background-color:transparent;
              </size>
             </property>
             <property name="text">
-             <string/>
+             <string>BET
+</string>
             </property>
             <property name="iconSize">
              <size>
@@ -220,7 +222,8 @@ background-color:transparent;
              </size>
             </property>
             <property name="text">
-             <string/>
+             <string>SEND
+</string>
             </property>
             <property name="iconSize">
              <size>
@@ -245,7 +248,14 @@ background-color:transparent;
              </size>
             </property>
             <property name="text">
-             <string/>
+             <string>RECEIVE
+</string>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -264,7 +274,8 @@ background-color:transparent;
              </size>
             </property>
             <property name="text">
-             <string/>
+             <string>CONTACTS
+</string>
             </property>
             <property name="iconSize">
              <size>
@@ -289,7 +300,8 @@ background-color:transparent;
              </size>
             </property>
             <property name="text">
-             <string/>
+             <string>COLD
+STAKING</string>
             </property>
             <property name="iconSize">
              <size>
@@ -314,7 +326,8 @@ background-color:transparent;
              </size>
             </property>
             <property name="text">
-             <string/>
+             <string>SETTINGS
+</string>
             </property>
             <property name="iconSize">
              <size>

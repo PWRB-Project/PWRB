@@ -7,7 +7,7 @@
 #ifndef SENDCHANGEADDRESSDIALOG_H
 #define SENDCHANGEADDRESSDIALOG_H
 
-#include <QDialog>
+#include "qt/pwrb/focuseddialog.h"
 #include "qt/pwrb/snackbar.h"
 
 class WalletModel;
@@ -16,7 +16,7 @@ namespace Ui {
 class SendChangeAddressDialog;
 }
 
-class SendChangeAddressDialog : public QDialog
+class SendChangeAddressDialog : public FocusedDialog
 {
     Q_OBJECT
 
@@ -37,7 +37,7 @@ private:
 
 private Q_SLOTS:
     void reset();
-    void save();
+    void accept() override;
 };
 
 #endif // SENDCHANGEADDRESSDIALOG_H

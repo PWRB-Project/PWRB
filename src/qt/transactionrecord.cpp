@@ -10,6 +10,7 @@
 
 #include "base58.h"
 #include "betting/bet.h"
+#include "core_io.h"
 #include "swifttx.h"
 #include "timedata.h"
 #include "wallet/wallet.h"
@@ -69,26 +70,28 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet* 
                 // PWRB stake reward
                 sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
                 sub.type = TransactionRecord::StakeMint;
-                sub.address = CBitcoinAddress(address).ToString();
+                sub.address = EncodeDestination(address);
                 sub.credit = nNet;
             } else {
                 // If staker also wins a bet, the total received will exceed 1.5 coins and we'll categorize as bet winnings
                 sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
                 sub.type = TransactionRecord::BetWin;
-                sub.address = CBitcoinAddress(address).ToString();
+                sub.address = EncodeDestination(address);
                 sub.credit = nNet;
             }
         } else if (nNet >= 50000000) {
             // Bet winnings included - any less than 0.5 coin credit cannot involve bet winnings
+			isminetype mine = wallet->IsMine(wtx.vout[1]);
             for (const CTxOut& out : wtx.vout) {
-                if (isminetype mine = wallet->IsMine(out)) {
+                if (wallet->IsMine(out)) {
+					mine = wallet->IsMine(out);
                     ExtractDestination(out.scriptPubKey, address);
                     break;
                 }
             }
             sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
             sub.type = TransactionRecord::BetWin;
-            sub.address = CBitcoinAddress(address).ToString();
+            sub.address = EncodeDestination(address);
             sub.credit = nNet;
         } else {
             //Masternode reward
@@ -98,7 +101,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet* 
                 isminetype mine = wallet->IsMine(wtx.vout[nIndexMN]);
                 sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
                 sub.type = TransactionRecord::MNReward;
-                sub.address = CBitcoinAddress(destMN).ToString();
+                sub.address = EncodeDestination(destMN);
                 sub.credit = wtx.vout[nIndexMN].nValue;
             }
         }
@@ -132,7 +135,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet* 
             std::string strAddress = "";
             CTxDestination address;
             if (ExtractDestination(txout.scriptPubKey, address))
-                strAddress = CBitcoinAddress(address).ToString();
+                strAddress = EncodeDestination(address);
 
             // a zerocoinspend that was sent to an address held by this wallet
             isminetype mine = wallet->IsMine(txout);
@@ -198,7 +201,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet* 
                 if (ExtractDestination(txout.scriptPubKey, address) && IsMine(*wallet, address)) {
                     // Received by PWRB Address
                     sub.type = TransactionRecord::RecvWithAddress;
-                    sub.address = CBitcoinAddress(address).ToString();
+                    sub.address = EncodeDestination(address);
                 } else {
                     // Received by IP connection (deprecated features), or a multisignature or other non-simple transaction
                     sub.type = TransactionRecord::RecvFromOther;
@@ -249,7 +252,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet* 
             // Label for payment to self
             CTxDestination address;
             if (ExtractDestination(wtx.vout[0].scriptPubKey, address)) {
-                sub.address = CBitcoinAddress(address).ToString();
+                sub.address = EncodeDestination(address);
             }
 
             CAmount nChange = wtx.GetChange();
@@ -285,13 +288,13 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet* 
                         continue;
                     // Sent to PWRB Address
                     sub.type = TransactionRecord::SendToAddress;
-                    sub.address = CBitcoinAddress(address).ToString();
+                    sub.address = EncodeDestination(address);
                 } else if (txout.IsZerocoinMint()){
                     sub.type = TransactionRecord::ZerocoinMint;
                     sub.address = mapValue["zerocoinmint"];
                     sub.credit += txout.nValue;
                 } else {
-                    std::string scriptPubKey = txout.scriptPubKey.ToString();
+                    std::string scriptPubKey = ScriptToAsmStr(txout.scriptPubKey);
                     if (!betTx) {
                         // Sent to IP, or other non-address transaction like OP_EVAL
                         sub.type = TransactionRecord::SendToOther;
@@ -435,10 +438,10 @@ bool TransactionRecord::ExtractAddress(const CScript& scriptPubKey, bool fColdSt
         addressStr = "No available address";
         return false;
     } else {
-        addressStr = CBitcoinAddress(
+        addressStr = EncodeDestination(
                 address,
                 (fColdStake ? CChainParams::STAKING_ADDRESS : CChainParams::PUBKEY_ADDRESS)
-        ).ToString();
+        );
         return true;
     }
 }

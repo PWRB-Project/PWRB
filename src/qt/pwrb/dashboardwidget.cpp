@@ -46,16 +46,13 @@ DashboardWidget::DashboardWidget(PWRBGUI* parent) :
     ui->left->setContentsMargins(0,0,0,0);
 
     // Title
-    ui->labelTitle2->setText(tr("Staking Rewards"));
     setCssTitleScreen(ui->labelTitle);
     setCssTitleScreen(ui->labelTitle2);
 
     /* Subtitle */
-    ui->labelSubtitle->setText(tr("You can view your account's history"));
     setCssSubtitleScreen(ui->labelSubtitle);
 
     // Staking Information
-    ui->labelMessage->setText(tr("Amount of PWRB staked."));
     setCssSubtitleScreen(ui->labelMessage);
     setCssProperty(ui->labelSquarePwrb, "square-chart-pwrb");
     setCssProperty(ui->labelSquarezPwrb, "square-chart-zpwrb");
@@ -67,9 +64,6 @@ DashboardWidget::DashboardWidget(PWRBGUI* parent) :
     fontBold.setWeight(QFont::Bold);
 
     setCssProperty(ui->labelChart, "legend-chart");
-
-    ui->labelAmountZpwrb->setText("0 zPWRB");
-    ui->labelAmountPwrb->setText("0 PWRB");
     setCssProperty(ui->labelAmountPwrb, "text-stake-pwrb-disable");
     setCssProperty(ui->labelAmountZpwrb, "text-stake-zpwrb-disable");
 
@@ -129,18 +123,13 @@ DashboardWidget::DashboardWidget(PWRBGUI* parent) :
     //Empty List
     ui->emptyContainer->setVisible(false);
     setCssProperty(ui->pushImgEmpty, "img-empty-transactions");
-
-    ui->labelEmpty->setText(tr("No transactions yet"));
     setCssProperty(ui->labelEmpty, "text-empty");
     setCssProperty(ui->chartContainer, "container-chart");
     setCssProperty(ui->pushImgEmptyChart, "img-empty-staking-on");
 
-    ui->btnHowTo->setText(tr("How to get PWRB"));
     setCssBtnSecondary(ui->btnHowTo);
 
-
     setCssProperty(ui->labelEmptyChart, "text-empty");
-    ui->labelMessageEmpty->setText(tr("You can verify the staking activity in the status bar at the top right of the wallet.\nIt will start automatically as soon as the wallet has enough confirmations on any unspent balances, and the wallet has synced."));
     setCssSubtitleScreen(ui->labelMessageEmpty);
 
     // Chart State
@@ -370,7 +359,9 @@ void DashboardWidget::setChartShow(ChartShowType type)
     if (isChartInitialized) refreshChart();
 }
 
-const QStringList monthsNames = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+const QStringList monthsNames = {QObject::tr("Jan"), QObject::tr("Feb"), QObject::tr("Mar"), QObject::tr("Apr"),
+                                 QObject::tr("May"), QObject::tr("Jun"), QObject::tr("Jul"), QObject::tr("Aug"),
+                                 QObject::tr("Sep"), QObject::tr("Oct"), QObject::tr("Nov"), QObject::tr("Dec")};
 
 void DashboardWidget::loadChart()
 {
@@ -644,8 +635,8 @@ void DashboardWidget::onChartRefreshed()
         axisX->clear();
     }
     // init sets
-    set0 = new QBarSet("PWRB");
-    set1 = new QBarSet("zPWRB");
+    set0 = new QBarSet(CURRENCY_UNIT.c_str());
+    set1 = new QBarSet("z" + QString(CURRENCY_UNIT.c_str()));
     set0->setColor(QColor(153,0,0));
     set1->setColor(QColor(255,102,102));
 

@@ -42,51 +42,36 @@ BetWidget::BetWidget(PWRBGUI* parent) :
     fontLight.setWeight(QFont::Light);
 
     /* Title */
-    ui->labelTitle->setText(tr("Bet"));
     setCssProperty(ui->labelTitle, "text-title-screen");
     ui->labelTitle->setFont(fontLight);
 
     /* Button Group */
-    ui->pushLeft->setText("PWRB");
     setCssProperty(ui->pushLeft, "btn-check-left");
     ui->pushLeft->setChecked(true);
-    ui->pushRight->setVisible(false);
     setCssProperty(ui->pushRight, "btn-check-right");
 
     /* Subtitle */
     ui->labelSubtitle1->setVisible(false);
-    setCssProperty(ui->labelSubtitle1, "text-subtitle");
-
     ui->labelSubtitle2->setVisible(false);
-    setCssProperty(ui->labelSubtitle2, "text-subtitle");
+    setCssProperty({ui->labelSubtitle1, ui->labelSubtitle2}, "text-subtitle");
 
-    /* Address */
-    ui->labelSubtitleAddress->setText(tr("Enter up to three numbers (1-69)"));
-    setCssProperty(ui->labelSubtitleAddress, "text-title");
-
-
-    /* Amount */
-    ui->labelSubtitleAmount->setText(tr("Amount"));
-    setCssProperty(ui->labelSubtitleAmount, "text-title");
+    /* Address - Amount*/
+    setCssProperty({ui->labelSubtitleAddress, ui->labelSubtitleAmount}, "text-title");
 
     /* Buttons */
-    ui->pushButtonFee->setText(tr("Customize fee"));
     setCssBtnSecondary(ui->pushButtonFee);
-
-    ui->pushButtonClear->setText(tr("Clear all"));
     setCssProperty(ui->pushButtonClear, "btn-secundary-clear");
 
     setCssBtnPrimary(ui->pushButtonSave);
-    ui->pushButtonReset->setText(tr("Reset to default"));
     setCssBtnSecondary(ui->pushButtonReset);
 
     // Coin control
-    ui->btnCoinControl->setTitleClassAndText("btn-title-grey", "Coin Control");
-    ui->btnCoinControl->setSubTitleClassAndText("text-subtitle", "Select the source of the coins.");
+    ui->btnCoinControl->setTitleClassAndText("btn-title-grey", tr("Coin Control"));
+    ui->btnCoinControl->setSubTitleClassAndText("text-subtitle", tr("Select the source of the coins"));
 
     // Change address option
-    ui->btnChangeAddress->setTitleClassAndText("btn-title-grey", "Change Address");
-    ui->btnChangeAddress->setSubTitleClassAndText("text-subtitle", "Customize the change address.");
+    ui->btnChangeAddress->setTitleClassAndText("btn-title-grey", tr("Change Address"));
+    ui->btnChangeAddress->setSubTitleClassAndText("text-subtitle", tr("Customize the change address"));
 
     connect(ui->pushButtonFee, &QPushButton::clicked, this, &BetWidget::onChangeCustomFeeClicked);
     connect(ui->btnCoinControl, &OptionButton::clicked, this, &BetWidget::onCoinControlClicked);
@@ -99,15 +84,12 @@ BetWidget::BetWidget(PWRBGUI* parent) :
 
 
     // Total Bet
-    ui->labelTitleTotalBet->setText(tr("Total to bet"));
     setCssProperty(ui->labelTitleTotalBet, "text-title");
 
-    ui->labelAmountBet->setText("0.00 PWRB");
     setCssProperty(ui->labelAmountBet, "text-body1");
 
     // Total Remaining
     setCssProperty(ui->labelTitleTotalRemaining, "text-title");
-
     setCssProperty(ui->labelAmountRemaining, "text-body1");
 
     // Icon Send
@@ -448,11 +430,11 @@ bool BetWidget::sendZpwrb(QList<SendCoinsRecipient> recipients){
         return false;
     }
 
-    std::list<std::pair<CBitcoinAddress*, CAmount>> outputs;
+    std::list<std::pair<CTxDestination, CAmount>> outputs;
     CAmount total = 0;
     for (SendCoinsRecipient rec : recipients){
         total += rec.amount;
-        outputs.push_back(std::pair<CBitcoinAddress*, CAmount>(new CBitcoinAddress(rec.address.toStdString()),rec.amount));
+        outputs.push_back(std::pair<CTxDestination, CAmount>(DecodeDestination(rec.address.toStdString()),rec.amount));
     }
 
     // use mints from zPWRB selector if applicable
@@ -493,7 +475,7 @@ bool BetWidget::sendZpwrb(QList<SendCoinsRecipient> recipients){
 
     std::string changeAddress = "";
     if(!boost::get<CNoDestination>(&CoinControlDialog::coinControl->destChange)){
-        changeAddress = CBitcoinAddress(CoinControlDialog::coinControl->destChange).ToString();
+        changeAddress = EncodeDestination(CoinControlDialog::coinControl->destChange);
     }else{
         changeAddress = walletModel->getAddressTableModel()->getAddressToShow().toStdString();
     }
@@ -544,7 +526,7 @@ void BetWidget::updateEntryLabels(QList<SendCoinsRecipient> recipients){
         if(!label.isNull()) {
             QString labelOld = walletModel->getAddressTableModel()->labelForAddress(rec.address);
             if(label.compare(labelOld) != 0) {
-                CTxDestination dest = CBitcoinAddress(rec.address.toStdString()).Get();
+                CTxDestination dest = DecodeDestination(rec.address.toStdString());
                 if (!walletModel->updateAddressBookLabels(dest, label.toStdString(),
                                                           this->walletModel->isMine(dest) ?
                                                                   AddressBook::AddressBookPurpose::RECEIVE :
@@ -564,17 +546,16 @@ void BetWidget::onChangeAddressClicked(){
     showHideOp(true);
     SendChangeAddressDialog* dialog = new SendChangeAddressDialog(window, walletModel);
     if (!boost::get<CNoDestination>(&CoinControlDialog::coinControl->destChange)) {
-        dialog->setAddress(QString::fromStdString(CBitcoinAddress(CoinControlDialog::coinControl->destChange).ToString()));
+        dialog->setAddress(QString::fromStdString(EncodeDestination(CoinControlDialog::coinControl->destChange)));
     }
     if (openDialogWithOpaqueBackgroundY(dialog, window, 3, 5)) {
-        CBitcoinAddress address(dialog->getAddress().toStdString());
-
+        CTxDestination dest = DecodeDestination(dialog->getAddress().toStdString());
         // Ask if it's what the user really wants
-        if (!walletModel->isMine(address) &&
+        if (!walletModel->isMine(dest) &&
             !ask(tr("Warning!"), tr("The change address doesn't belong to this wallet.\n\nDo you want to continue?"))) {
             return;
         }
-        CoinControlDialog::coinControl->destChange = address.Get();
+        CoinControlDialog::coinControl->destChange = dest;
         ui->btnChangeAddress->setActive(true);
     }
     // check if changeAddress has been reset to NoDestination (or wasn't set at all)
@@ -642,7 +623,7 @@ void BetWidget::onCoinControlClicked(){
             ui->btnCoinControl->setActive(CoinControlDialog::coinControl->HasSelected());
             refreshAmounts();
         } else {
-            inform(tr("You don't have any PWRB to select."));
+            inform(tr("You don't have any %1 to select.").arg(CURRENCY_UNIT.c_str()));
         }
     }else{
         if (walletModel->getZerocoinBalance() > 0) {
@@ -766,7 +747,7 @@ void BetWidget::onContactMultiClicked(){
             inform(tr("Invalid address"));
             return;
         }
-        CBitcoinAddress pwrbAdd = CBitcoinAddress(address.toStdString());
+        CTxDestination pwrbAdd = DecodeDestination(address.toStdString());
         if (walletModel->isMine(pwrbAdd)) {
             inform(tr("Cannot store your own address as contact"));
             return;
@@ -787,7 +768,7 @@ void BetWidget::onContactMultiClicked(){
             if (label == dialog->getLabel()) {
                 return;
             }
-            if (walletModel->updateAddressBookLabels(pwrbAdd.Get(), dialog->getLabel().toStdString(),
+            if (walletModel->updateAddressBookLabels(pwrbAdd, dialog->getLabel().toStdString(),
                     AddressBook::AddressBookPurpose::SEND)) {
                 inform(tr("New Contact Stored"));
             } else {

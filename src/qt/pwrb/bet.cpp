@@ -48,6 +48,7 @@ BetWidget::BetWidget(PWRBGUI* parent) :
     /* Button Group */
     setCssProperty(ui->pushLeft, "btn-check-left");
     ui->pushLeft->setChecked(true);
+    ui->pushRight->setVisible(false);
     setCssProperty(ui->pushRight, "btn-check-right");
 
     /* Subtitle */

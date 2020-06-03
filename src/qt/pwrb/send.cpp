@@ -49,9 +49,12 @@ SendWidget::SendWidget(PWRBGUI* parent) :
     /* Button Group */
     setCssProperty(ui->pushLeft, "btn-check-left");
     ui->pushLeft->setChecked(true);
+    ui->pushRight->setVisible(false);
     setCssProperty(ui->pushRight, "btn-check-right");
 
     /* Subtitle */
+    ui->labelSubtitle1->setVisible(false);
+    ui->labelSubtitle2->setVisible(false);
     setCssProperty({ui->labelSubtitle1, ui->labelSubtitle2}, "text-subtitle");
 
     /* Address - Amount*/

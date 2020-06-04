@@ -90,6 +90,12 @@ void TxDetailDialog::setData(WalletModel *model, const QModelIndex &index)
     QString amountText = BitcoinUnits::formatWithUnit(nDisplayUnit, amount, true, BitcoinUnits::separatorAlways);
     ui->textAmount->setText(amountText);
 
+    // Caculate number of seconds from last synced block to now	
+    QDateTime lastBlockDate = clientModel->getLastBlockDate();
+    QDateTime currentDate = QDateTime::currentDateTimeUtc();
+    int secs = lastBlockDate.secsTo(currentDate);
+    const int HOUR_IN_SECONDS = 60 * 60;
+
     const CWalletTx* tx = model->getTx(rec->hash);
     if (tx) {
         this->txHash = rec->hash;
@@ -101,7 +107,13 @@ void TxDetailDialog::setData(WalletModel *model, const QModelIndex &index)
                 ui->labelTitle->setText(tr("Confirm Your Bet"));
                 ui->btnSave->setText(tr("BET"));
                 ui->labelSend->setText("Place Bet: ");
-                ui->textSendLabel->setText("Numbers Selected: " + address);
+                if (secs > 2 * HOUR_IN_SECONDS) {
+				    ui->btnSave->setVisible(false);
+				    ui->textSendLabel->setText("Wallet must sychronize before betting");
+                } else {
+				    ui->btnSave->setVisible(true);
+				    ui->textSendLabel->setText("Numbers Selected: " + address);
+                }
             } else {
                 ui->labelTitle->setText(tr("Bet Details"));
                 ui->labelSend->setText("Your Bet: ");
@@ -140,6 +152,12 @@ void TxDetailDialog::setData(WalletModel *model, WalletModelTransaction &tx)
     CAmount txFee = tx.getTransactionFee();
     CAmount totalAmount = tx.getTotalTransactionAmount() + txFee;
 
+    // Caculate number of seconds from last synced block to now	
+    QDateTime lastBlockDate = clientModel->getLastBlockDate();
+    QDateTime currentDate = QDateTime::currentDateTimeUtc();
+    int secs = lastBlockDate.secsTo(currentDate);
+    const int HOUR_IN_SECONDS = 60 * 60;
+
     ui->textAmount->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, totalAmount, false, BitcoinUnits::separatorAlways) + " (Fee included)");
     int nRecipients = tx.getRecipients().size();
     if (tx.getRecipients().at(0).address[0].isDigit()) {
@@ -147,7 +165,13 @@ void TxDetailDialog::setData(WalletModel *model, WalletModelTransaction &tx)
             ui->labelTitle->setText(tr("Confirm Your Bet"));
             ui->btnSave->setText(tr("BET"));
             ui->labelSend->setText("Place Bet: ");
-            ui->textSendLabel->setText("Numbers Selected: " + tx.getRecipients().at(0).address);
+            if (secs > 2 * HOUR_IN_SECONDS) {
+				ui->btnSave->setVisible(false);
+				ui->textSendLabel->setText("Wallet must sychronize before betting");
+            } else {
+				ui->btnSave->setVisible(true);
+				ui->textSendLabel->setText("Numbers Selected: " + tx.getRecipients().at(0).address);
+            }
         } else {
             ui->labelTitle->setText(tr("Bet Details"));
             ui->btnSave->setText(tr("BET"));

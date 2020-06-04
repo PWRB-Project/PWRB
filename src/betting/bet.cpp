@@ -3,6 +3,14 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#if defined(HAVE_CONFIG_H)
+#include "config/pwrb-config.h"
+#endif
+
+#ifndef WIN32
+#define timegm _mkgmtime
+#endif
+
 #include "bet.h"
 #include "core_io.h"
 #include <ctime>

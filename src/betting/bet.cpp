@@ -875,9 +875,9 @@ std::time_t lastdrawtime(std::time_t blockTime)
     wsTime.tm_sec = 0;
     wsTime.tm_isdst = -1;
 
-    std::mktime(&wsTime);
+    timegm(&wsTime);
     
-    return std::mktime(&wsTime);
+    return timegm(&wsTime);
 }
 
 std::string lastdrawdate(std::time_t blockTime)
@@ -910,7 +910,7 @@ std::string lastdrawdate(std::time_t blockTime)
     wsTime.tm_sec = 0;
     wsTime.tm_isdst = -1;
 
-    std::mktime(&wsTime);
+    timegm(&wsTime);
     
     char datechar[12];
 
@@ -946,9 +946,9 @@ std::time_t nextdrawtime(std::time_t blockTime)
         wsTime.tm_mday += 3;
     }
 
-    std::mktime(&wsTime);
+    timegm(&wsTime);
 
-    return std::mktime(&wsTime);
+    return timegm(&wsTime);
 }
 std::string nextdrawdate(std::time_t blockTime)
 {
@@ -975,7 +975,7 @@ std::string nextdrawdate(std::time_t blockTime)
         wsTime.tm_mday += 2;
     }    
         
-    std::mktime(&wsTime);
+    timegm(&wsTime);
     
     char datechar[12];
 

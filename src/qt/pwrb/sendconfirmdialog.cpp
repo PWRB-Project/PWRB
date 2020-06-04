@@ -101,18 +101,7 @@ void TxDetailDialog::setData(WalletModel *model, const QModelIndex &index)
                 ui->labelTitle->setText(tr("Confirm Your Bet"));
                 ui->btnSave->setText(tr("BET"));
                 ui->labelSend->setText("Place Bet: ");
-                // Caculate number of seconds from last synced block to now	
-                QDateTime lastBlockDate = parent->clientModel->getLastBlockDate();
-                QDateTime currentDate = QDateTime::currentDateTimeUtc();
-                int secs = lastBlockDate.secsTo(currentDate);
-                const int HOUR_IN_SECONDS = 60 * 60;
-                if (secs > 2 * HOUR_IN_SECONDS) {
-				    ui->btnSave->setVisible(false);
-				    ui->textSendLabel->setText("Wallet must sychronize before betting");
-                } else {
-				    ui->btnSave->setVisible(true);
-				    ui->textSendLabel->setText("Numbers Selected: " + address);
-                }
+                ui->textSendLabel->setText("Numbers Selected: " + address);
             } else {
                 ui->labelTitle->setText(tr("Bet Details"));
                 ui->labelSend->setText("Your Bet: ");
@@ -158,18 +147,7 @@ void TxDetailDialog::setData(WalletModel *model, WalletModelTransaction &tx)
             ui->labelTitle->setText(tr("Confirm Your Bet"));
             ui->btnSave->setText(tr("BET"));
             ui->labelSend->setText("Place Bet: ");
-            // Caculate number of seconds from last synced block to now	
-            QDateTime lastBlockDate = parent->clientModel->getLastBlockDate();
-            QDateTime currentDate = QDateTime::currentDateTimeUtc();
-            int secs = lastBlockDate.secsTo(currentDate);
-            const int HOUR_IN_SECONDS = 60 * 60;
-            if (secs > 2 * HOUR_IN_SECONDS) {
-				ui->btnSave->setVisible(false);
-				ui->textSendLabel->setText("Wallet must sychronize before betting");
-            } else {
-				ui->btnSave->setVisible(true);
-				ui->textSendLabel->setText("Numbers Selected: " + tx.getRecipients().at(0).address);
-            }
+            ui->textSendLabel->setText("Numbers Selected: " + tx.getRecipients().at(0).address);
         } else {
             ui->labelTitle->setText(tr("Bet Details"));
             ui->btnSave->setText(tr("BET"));

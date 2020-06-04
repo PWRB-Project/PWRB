@@ -170,9 +170,23 @@ void BetWidget::refreshAmounts()
 
 void BetWidget::loadClientModel()
 {
+    // Caculate number of seconds from last synced block to now	
+    QDateTime lastBlockDate;
+    QDateTime currentDate;
+    int secs;
+
     if (clientModel) {
         connect(clientModel, &ClientModel::numBlocksChanged, [this](){
             if (customFeeDialog) customFeeDialog->updateFee();
+
+            lastBlockDate = clientModel->getLastBlockDate();
+            currentDate = QDateTime::currentDateTimeUtc();
+            secs = lastBlockDate.secsTo(currentDate);
+            if (secs > 2 * 60 * 60) {
+                ui->pushButtonSave->setVisible(false);
+            } else {
+                ui->pushButtonSave->setVisible(true);
+            }
         });
     }
 }

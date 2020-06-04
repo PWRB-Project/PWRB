@@ -7,7 +7,7 @@
 #include "config/pwrb-config.h"
 #endif
 
-#ifndef WIN32
+#ifdef WIN32
 #define timegm _mkgmtime
 #endif
 

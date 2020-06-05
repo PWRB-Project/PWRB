@@ -1235,9 +1235,11 @@ bool AppInit2()
 
         uiInterface.InitMessage(_("Verifying past PowerBall results"));
 
+        bool resultsDownloaded = false;
         // Read results file for past draws
         try {
             DownloadResultsFile();
+            resultsDownloaded = true;
         } catch (const std::exception& e) {
             LogPrintf("Error downloading the results file: %s\n", e.what());
         }
@@ -1245,8 +1247,13 @@ bool AppInit2()
         // Read backup results file for past draws
         try {
             DownloadResultsFile2();
+            resultsDownloaded = true;
         } catch (const std::exception& e) {
             LogPrintf("Error downloading the backup results file: %s\n", e.what());
+        }
+
+        if(!resultsDownloaded) {
+            return UIError(_("Unable to download past draw results for block validation."));
         }
 
         uiInterface.InitMessage(_("Verifying wallet..."));

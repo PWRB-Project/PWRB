@@ -1,0 +1,157 @@
+
+## <summary>policy for pwrb</summary>
+
+
+########################################
+## <summary>
+##	Transition to pwrb.
+## </summary>
+## <param name="domain">
+## <summary>
+##	Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`pwrb_domtrans',`
+	gen_require(`
+		type pwrb_t, pwrb_exec_t;
+	')
+
+	corecmd_search_bin($1)
+	domtrans_pattern($1, pwrb_exec_t, pwrb_t)
+')
+
+
+########################################
+## <summary>
+##	Execute pwrb server in the pwrb domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`pwrb_initrc_domtrans',`
+	gen_require(`
+		type pwrb_initrc_exec_t;
+	')
+
+	init_labeled_script_domtrans($1, pwrb_initrc_exec_t)
+')
+
+
+########################################
+## <summary>
+##	Search pwrb lib directories.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`pwrb_search_lib',`
+	gen_require(`
+		type pwrb_var_lib_t;
+	')
+
+	allow $1 pwrb_var_lib_t:dir search_dir_perms;
+	files_search_var_lib($1)
+')
+
+########################################
+## <summary>
+##	Read pwrb lib files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`pwrb_read_lib_files',`
+	gen_require(`
+		type pwrb_var_lib_t;
+	')
+
+	files_search_var_lib($1)
+	read_files_pattern($1, pwrb_var_lib_t, pwrb_var_lib_t)
+')
+
+########################################
+## <summary>
+##	Manage pwrb lib files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`pwrb_manage_lib_files',`
+	gen_require(`
+		type pwrb_var_lib_t;
+	')
+
+	files_search_var_lib($1)
+	manage_files_pattern($1, pwrb_var_lib_t, pwrb_var_lib_t)
+')
+
+########################################
+## <summary>
+##	Manage pwrb lib directories.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`pwrb_manage_lib_dirs',`
+	gen_require(`
+		type pwrb_var_lib_t;
+	')
+
+	files_search_var_lib($1)
+	manage_dirs_pattern($1, pwrb_var_lib_t, pwrb_var_lib_t)
+')
+
+
+########################################
+## <summary>
+##	All of the rules required to administrate
+##	a pwrb environment
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="role">
+##	<summary>
+##	Role allowed access.
+##	</summary>
+## </param>
+## <rolecap/>
+#
+interface(`pwrb_admin',`
+	gen_require(`
+		type pwrb_t;
+		type pwrb_initrc_exec_t;
+		type pwrb_var_lib_t;
+	')
+
+	allow $1 pwrb_t:process { ptrace signal_perms };
+	ps_process_pattern($1, pwrb_t)
+
+	pwrb_initrc_domtrans($1)
+	domain_system_change_exemption($1)
+	role_transition $2 pwrb_initrc_exec_t system_r;
+	allow $2 system_r;
+
+	files_search_var_lib($1)
+	admin_pattern($1, pwrb_var_lib_t)
+
+')
+

@@ -1,0 +1,3 @@
+usr/local/bin/pwrbd usr/bin
+usr/local/bin/pwrb-cli usr/bin
+debian/examples/pwrb.conf etc/pwrb

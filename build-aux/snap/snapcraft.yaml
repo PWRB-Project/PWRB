@@ -2,7 +2,7 @@
 # Copyright (c) 2019 The PIVX developers
 name: pwrb-core
 base: core18
-version: 1.0.5
+version: 1.0.6
 summary:   PWRB (Private – Instant – Verified – Transaction)
 description: |
   PWRB is an MIT licensed,

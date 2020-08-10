@@ -112,6 +112,9 @@ bool IsBlockPayoutsValid(std::vector<CBetOut> vExpectedPayouts, CBlock block, in
             LogPrintf("%s - Incorrect number of transactions in block %s. Expected: %s. Actual: %s \n", __func__, block.GetHash().ToString(), vExpectedPayouts.size() + numStakingTx, tx.vout.size());
             LogPrintf("%s - Expected Bet Payouts: %s. Expected Stake vOuts: %s. \n", __func__, vExpectedPayouts.size(), numStakingTx);
             return false;
+        } else if (numStakingTx == tx.vout.size()) {
+            LogPrintf("%s - NO BET PAYOUT: Expected Bet Payouts: %s. Expected Stake vOuts: %s. \n", __func__, vExpectedPayouts.size(), numStakingTx);
+            return true;
         }
 
         CAmount totalExpPayout = 0;
@@ -339,7 +342,8 @@ std::vector<CBetOut> GetBetPayouts(int height)
     } else if (!IsInitialBlockDownload() && (GetTime() - chainActive.Tip()->GetBlockTime() < (60*60*2)) && height % 1500 == 1496) {
         DownloadResultsFile2();
         return {};
-    } else if (height % 1500 == 0 && (chainActive.Tip()->GetBlockTime() > lastdrawtime(chainActive.Tip()->GetBlockTime()) + (60*60*16))) {
+    } else if ((height <= 88500 && height % 1500 == 0 && (chainActive.Tip()->GetBlockTime() > lastdrawtime(chainActive.Tip()->GetBlockTime()) + (60*60*16))) ||
+               (height > 88500 && height % 1500 == 0 && (chainActive.Tip()->GetBlockTime() > lastdrawtime(chainActive.Tip()->GetBlockTime()) + (60*60*18)))) {
 
         std::time_t lastdraw = lastdrawtime(chainActive.Tip()->GetBlockTime());
         std::tm * ptm = gmtime(&lastdraw);

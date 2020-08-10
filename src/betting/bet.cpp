@@ -108,13 +108,13 @@ bool IsBlockPayoutsValid(std::vector<CBetOut> vExpectedPayouts, CBlock block, in
             totalStakeAcc += voutValue;
         }
 
-        if (vExpectedPayouts.size() + numStakingTx != tx.vout.size()) {
+        if (numStakingTx == tx.vout.size()) {
+            LogPrintf("%s - NO BET PAYOUT: Expected Bet Payouts: %s. Expected Stake vOuts: %s. \n", __func__, vExpectedPayouts.size(), numStakingTx);
+            return true;
+        } else if (vExpectedPayouts.size() + numStakingTx != tx.vout.size()) {
             LogPrintf("%s - Incorrect number of transactions in block %s. Expected: %s. Actual: %s \n", __func__, block.GetHash().ToString(), vExpectedPayouts.size() + numStakingTx, tx.vout.size());
             LogPrintf("%s - Expected Bet Payouts: %s. Expected Stake vOuts: %s. \n", __func__, vExpectedPayouts.size(), numStakingTx);
             return false;
-        } else if (numStakingTx == tx.vout.size()) {
-            LogPrintf("%s - NO BET PAYOUT: Expected Bet Payouts: %s. Expected Stake vOuts: %s. \n", __func__, vExpectedPayouts.size(), numStakingTx);
-            return true;
         }
 
         CAmount totalExpPayout = 0;

@@ -108,7 +108,7 @@ bool IsBlockPayoutsValid(std::vector<CBetOut> vExpectedPayouts, CBlock block, in
             totalStakeAcc += voutValue;
         }
 
-        if (numStakingTx == tx.vout.size()) {
+        if (numStakingTx == tx.vout.size() && totalStakeAcc == stakeAmount + GetBlockValue(height) - GetMasternodePayment()) {
             LogPrintf("%s - NO BET PAYOUT: Expected Bet Payouts: %s. Expected Stake vOuts: %s. \n", __func__, vExpectedPayouts.size(), numStakingTx);
             return true;
         } else if (vExpectedPayouts.size() + numStakingTx != tx.vout.size()) {

@@ -1,5 +1,5 @@
 ---
-name: "pwrb-win-1.0.7"
+name: "pwrb-win-1.0.8"
 enable_cache: true
 distro: "ubuntu"
 suites:

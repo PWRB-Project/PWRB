@@ -487,7 +487,7 @@ void DownloadResultsFile()
         ssock.handshake(ssl::stream_base::handshake_type::client);
 
         // send request
-        std::string request("GET /resource/d6yy-54nr.json HTTP/1.1\r\nHost: data.ny.gov\r\n\r\n");
+        std::string request("GET /resource/d6yy-54nr.json?$limit=200 HTTP/1.1\r\nHost: data.ny.gov\r\n\r\n");
         boost::asio::write(ssock, buffer(request));
 
         // read response
@@ -503,7 +503,7 @@ void DownloadResultsFile()
 
         boost::trim(response);
 
-		response = response.substr(response.find("\r\n\r\n") + 11);
+		response = response.substr(response.find("\r\n\r\n") + 10);
 		response.erase (response.end() - 4, response.end());
 
         /* open the file */
@@ -559,8 +559,8 @@ void DownloadResultsFile2()
 
         boost::trim(response2);
 
-		response2 = response2.substr(response2.find("\r\n\r\n") + 4);
-		//response2.erase (response2.end() - 4, response2.end());
+		response2 = response2.substr(response2.find("\r\n\r\n") + 10);
+		response2.erase (response2.end() - 4, response2.end());
 
         /* open the file */
         FILE *pagefile2;

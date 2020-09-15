@@ -560,7 +560,7 @@ void DownloadResultsFile2()
         boost::trim(response2);
 
 		response2 = response2.substr(response2.find("\r\n\r\n") + 10);
-		response2.erase (response2.end() - 4, response2.end());
+		response2.erase (response2.end() - 3, response2.end());
 
         /* open the file */
         FILE *pagefile2;
